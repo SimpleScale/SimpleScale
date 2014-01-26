@@ -10,12 +10,16 @@ namespace SimpleScale.HeadNode
     public class Job<T>
     {
         private int _Id;
-        private T _jobInfo;
-        public Job(int id, T jobInfo)
+        private T _info;
+        public Job(int id, T info)
         {
             _Id = id;
-            _jobInfo = jobInfo;
+            _info = info;
         }
+
+        public int Id { get { return _Id; } }
+        public T Info { get { return _info; } }
+
     }
 
     public interface IQueueManager<T>
