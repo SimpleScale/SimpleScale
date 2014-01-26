@@ -12,19 +12,6 @@ using SimpleScale.HeadNode;
 
 namespace TestApp
 {
-    public class Member {
-        public string Name;
-    }
-
-    public class ValueMemberMapJob : IMapJob<Member>
-    {
-        public void DoWork(Job<Member> job)
-        {
-            MessageBox.Show("Processing member " + job.Info.Name);
-            Thread.Sleep(1000);
-            MessageBox.Show("Member " + job.Info.Name + " processed");
-        }
-    }
 
     public partial class Form1 : Form
     {
@@ -54,5 +41,18 @@ namespace TestApp
         }
 
 
+    }
+    public class Member {
+        public string Name;
+    }
+
+    public class ValueMemberMapJob : IMapJob<Member>
+    {
+        public void DoWork(Job<Member> job)
+        {
+            MessageBox.Show("Processing member " + job.Info.Name);
+            Thread.Sleep(1000);
+            MessageBox.Show("Member " + job.Info.Name + " processed");
+        }
     }
 }
