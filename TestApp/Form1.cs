@@ -12,36 +12,57 @@ using SimpleScale.HeadNode;
 
 namespace TestApp
 {
-
     public partial class Form1 : Form
     {
+        CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        MemoryQueueManager<Member> _queueManager = new MemoryQueueManager<Member>();
+        int _jobCount = 0;
+
         public Form1()
         {
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void StartButtonClick(object sender, EventArgs e)
         {
-            var queueManager = new MemoryQueueManager<Member>();
-            var mapService = new MapService<Member>(queueManager, new ValueMemberMapJob());
-
-            queueManager.Add(GetJobs());
-            mapService.Start();
+            var mapService = new MapService<Member>(_queueManager, new ValueMemberMapJob());
+            mapService.StartAsync(_cancellationTokenSource);
         }
 
+        private void cancelButton_Click(object sender, EventArgs e)
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        private void addButton_Click(object sender, EventArgs e)
+        {
+            _queueManager.Add(GetJobs());
+        }
+        
         public List<Job<Member>> GetJobs()
         {
-            var job1 = new Job<Member>(0, new Member{ Name = "Tom"});
-            var job2 = new Job<Member>(1, new Member{ Name = "Dick"});
-            var job3 = new Job<Member>(2, new Member{ Name = "Harry"});
-
             return new List<Job<Member>>{
-                job1, job2, job3
+                CreateMemberJob("Tom"),
+                CreateMemberJob("Dick"),
+                CreateMemberJob("Harry"),
+                CreateMemberJob("Jane"),
+                CreateMemberJob("Anne")
             };
         }
 
+        public Job<Member> CreateMemberJob(string name)
+        {
+            var member = new Member { Name = name };
+            return new Job<Member>(_jobCount++, member);
+        }
 
+        private void logTextBox_TextChanged(object sender, EventArgs e)
+        {
+            logTextBox.SelectionStart = logTextBox.Text.Length;
+            logTextBox.ScrollToCaret();
+        }
     }
+
     public class Member {
         public string Name;
     }
@@ -50,9 +71,12 @@ namespace TestApp
     {
         public void DoWork(Job<Member> job)
         {
-            MessageBox.Show("Processing member " + job.Info.Name);
-            Thread.Sleep(1000);
-            MessageBox.Show("Member " + job.Info.Name + " processed");
+            for (int i = 0; i < 50000000; i++)
+                DoNothing();
+        }
+
+        public void DoNothing() {
+            int i = 2 + 1;
         }
     }
 }
