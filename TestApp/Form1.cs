@@ -8,7 +8,8 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-using SimpleScale.HeadNode;
+using SimpleScale.WorkerNode;
+using SimpleScale.Common;
 
 namespace TestApp
 {
@@ -38,6 +39,12 @@ namespace TestApp
         {
             _queueManager.Add(GetJobs());
         }
+
+        private void logTextBox_TextChanged(object sender, EventArgs e)
+        {
+            logTextBox.SelectionStart = logTextBox.Text.Length;
+            logTextBox.ScrollToCaret();
+        }
         
         public List<Job<Member>> GetJobs()
         {
@@ -54,29 +61,6 @@ namespace TestApp
         {
             var member = new Member { Name = name };
             return new Job<Member>(_jobCount++, member);
-        }
-
-        private void logTextBox_TextChanged(object sender, EventArgs e)
-        {
-            logTextBox.SelectionStart = logTextBox.Text.Length;
-            logTextBox.ScrollToCaret();
-        }
-    }
-
-    public class Member {
-        public string Name;
-    }
-
-    public class ValueMemberMapJob : IMapJob<Member>
-    {
-        public void DoWork(Job<Member> job)
-        {
-            for (int i = 0; i < 50000000; i++)
-                DoNothing();
-        }
-
-        public void DoNothing() {
-            int i = 2 + 1;
         }
     }
 }

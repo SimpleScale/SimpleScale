@@ -53,8 +53,10 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Member.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueMemberMapJob.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -82,9 +84,17 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HeadNode\HeadNode.csproj">
       <Project>{3e582d6a-a350-4108-8d5a-295c7be890b0}</Project>
       <Name>HeadNode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkerNode\WorkerNode.csproj">
+      <Project>{d4afa96e-d09f-4a1a-b132-965f341c9920}</Project>
+      <Name>WorkerNode</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
