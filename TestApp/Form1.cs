@@ -8,8 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
-using SimpleScale.WorkerNode;
+using SimpleScale.HeadNode;
 using SimpleScale.Common;
+using SimpleScale.WorkerNode;
 
 namespace TestApp
 {
@@ -17,17 +18,18 @@ namespace TestApp
     {
         CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         MemoryQueueManager<Member> _queueManager = new MemoryQueueManager<Member>();
-        int _jobCount = 0;
+        HeadNode<Member> _headNode;
 
         public Form1()
         {
             InitializeComponent();
+            _headNode = new HeadNode<Member>(_queueManager);
         }
 
         private void StartButtonClick(object sender, EventArgs e)
         {
-            var mapService = new MapService<Member>(_queueManager, new ValueMemberMapJob());
-            mapService.StartAsync(_cancellationTokenSource);
+            var workerNode = new WorkerNode<Member>(_queueManager, new ValueMemberMapJob());
+            workerNode.StartAsync(_cancellationTokenSource);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
@@ -37,7 +39,7 @@ namespace TestApp
 
         private void addButton_Click(object sender, EventArgs e)
         {
-            _queueManager.Add(GetJobs());
+            _headNode.RunBatch(GetBatch());
         }
 
         private void logTextBox_TextChanged(object sender, EventArgs e)
@@ -45,22 +47,23 @@ namespace TestApp
             logTextBox.SelectionStart = logTextBox.Text.Length;
             logTextBox.ScrollToCaret();
         }
-        
-        public List<Job<Member>> GetJobs()
+
+        public Batch<Member> GetBatch()
         {
-            return new List<Job<Member>>{
-                CreateMemberJob("Tom"),
-                CreateMemberJob("Dick"),
-                CreateMemberJob("Harry"),
-                CreateMemberJob("Jane"),
-                CreateMemberJob("Anne")
+            var jobDataList = new List<Member>{
+                CreateMember("Tom"),
+                CreateMember("Dick"),
+                CreateMember("Harry"),
+                CreateMember("Jane"),
+                CreateMember("Anne")
             };
+
+            return new Batch<Member>(jobDataList);
         }
 
-        public Job<Member> CreateMemberJob(string name)
+        public Member CreateMember(string name)
         {
-            var member = new Member { Name = name };
-            return new Job<Member>(_jobCount++, member);
+            return new Member { Name = name };
         }
     }
 }

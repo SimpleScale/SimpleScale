@@ -10,12 +10,13 @@ using SimpleScale.Common;
 
 namespace SimpleScale.WorkerNode
 {
-    public class MapService<T>
+    public class WorkerNode<T>
     {
         public static Logger _logger = LogManager.GetCurrentClassLogger();
-        readonly IQueueManager<T> _queueManager;
-        readonly IMapJob<T> _mapJob;
-        public MapService(IQueueManager<T> queueManager, IMapJob<T> mapJob)
+        private readonly IQueueManager<T> _queueManager;
+        private readonly IMapJob<T> _mapJob;
+
+        public WorkerNode(IQueueManager<T> queueManager, IMapJob<T> mapJob)
         {
             _queueManager = queueManager;
             _mapJob = mapJob;
@@ -29,16 +30,16 @@ namespace SimpleScale.WorkerNode
 
         public void Start(CancellationToken cancellationToken)
         {
-            _logger.Info("Starting the map service " + Thread.CurrentThread.ManagedThreadId + ".");
+            var threadIdText = "(Thread Id -" + Thread.CurrentThread.ManagedThreadId + ").";
+            _logger.Info(threadIdText + " Starting a worker node...");
             while (true)
             {
                 var job = _queueManager.Read();
-                _logger.Info("Processing job " + job.Id + ".");
+                _logger.Info(threadIdText + " Processing job '" + job.Id + "' in batch '" + job.BatchId + "'.");
                 _mapJob.DoWork(job);
-                _logger.Info("Job " + job.Id + " complete.");
+                _logger.Info(threadIdText + "Job '" + job.Id + "' in batch '" + job.BatchId + "' completed.");
                 cancellationToken.ThrowIfCancellationRequested();
             }
-            _logger.Info("Ending the map service " + Thread.CurrentThread.ManagedThreadId + ".");
         }
     }
 }

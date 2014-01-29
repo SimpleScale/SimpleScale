@@ -7,16 +7,15 @@ namespace SimpleScale.Common
 {
     public class Job<T>
     {
-        private int _Id;
-        private T _info;
-        public Job(int id, T info)
+        public readonly T Data;
+        public readonly int Id;
+        public readonly Guid BatchId;
+
+        public Job(T data, int id, Guid batchId)
         {
-            _Id = id;
-            _info = info;
+            Data = data;
+            Id = id;
+            BatchId = batchId;
         }
-
-        public int Id { get { return _Id; } }
-        public T Info { get { return _info; } }
-
     }
 }
