@@ -44,13 +44,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="HeadNodeUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HeadNode\HeadNode.csproj">
       <Project>{3e582d6a-a350-4108-8d5a-295c7be890b0}</Project>
       <Name>HeadNode</Name>
