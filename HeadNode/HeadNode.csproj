@@ -46,12 +46,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="HeadNode.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WorkerNode\WorkerNode.csproj">
+      <Project>{d4afa96e-d09f-4a1a-b132-965f341c9920}</Project>
+      <Name>WorkerNode</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

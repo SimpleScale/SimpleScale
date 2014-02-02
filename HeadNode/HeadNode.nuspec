@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>SimpleScale</id>
+    <version>0.1</version>
+    <title>Simple Scale</title>
+    <authors>Keith Harrison</authors>
+    <owners>Keith Harrison</owners>
+    <projectUrl>https://github.com/keithharrisonuk/SimpleScale</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>A framework to scale embarrssingly  parallel problems over multiple servers using message queues.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2014</copyright>
+    <tags>hpc scale map reduce cloud</tags>
+    <dependencies>
+      <dependency id="NLog" version="2.1.0" />
+    </dependencies>
+    <references>
+      <reference file="SimpleScale.Common.dll" />
+      <reference file="SimpleScale.WorkerNode.dll" />
+      <reference file="SimpleScale.HeadNode.dll" />
+    </references>
+  </metadata>
+</package>
