@@ -35,6 +35,15 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\net40\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="SimpleScale.Common">
+      <HintPath>..\packages\SimpleScale.0.1\lib\net40\SimpleScale.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleScale.HeadNode">
+      <HintPath>..\packages\SimpleScale.0.1\lib\net40\SimpleScale.HeadNode.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleScale.WorkerNode">
+      <HintPath>..\packages\SimpleScale.0.1\lib\net40\SimpleScale.WorkerNode.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -82,20 +91,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HeadNode\HeadNode.csproj">
-      <Project>{3e582d6a-a350-4108-8d5a-295c7be890b0}</Project>
-      <Name>HeadNode</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WorkerNode\WorkerNode.csproj">
-      <Project>{d4afa96e-d09f-4a1a-b132-965f341c9920}</Project>
-      <Name>WorkerNode</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
