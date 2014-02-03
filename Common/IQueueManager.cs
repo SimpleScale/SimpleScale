@@ -5,9 +5,11 @@ using System.Text;
 
 namespace SimpleScale.Common
 {
-    public interface IQueueManager<T>
+    public interface IQueueManager<T, U>
     {
-        void Add(List<Job<T>> jobs);
-        Job<T> Read();
+        void AddJobs(List<Job<T>> jobs);
+        Job<T> ReadJob();
+        void AddCompleteJob(Result<U> job);
+        Result<U> ReadCompletedJob();
     }
 }

@@ -10,13 +10,13 @@ using SimpleScale.Common;
 
 namespace SimpleScale.WorkerNode
 {
-    public class WorkerNode<T>
+    public class WorkerNode<T, U>
     {
         public static Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IQueueManager<T> _queueManager;
-        private readonly IMapJob<T> _mapJob;
+        private readonly IQueueManager<T, U> _queueManager;
+        private readonly IMapJob<T, U> _mapJob;
 
-        public WorkerNode(IQueueManager<T> queueManager, IMapJob<T> mapJob)
+        public WorkerNode(IQueueManager<T, U> queueManager, IMapJob<T, U> mapJob)
         {
             _queueManager = queueManager;
             _mapJob = mapJob;
@@ -34,9 +34,11 @@ namespace SimpleScale.WorkerNode
             _logger.Info(threadIdText + " Starting a worker node...");
             while (true)
             {
-                var job = _queueManager.Read();
+                var job = _queueManager.ReadJob();
                 _logger.Info(threadIdText + " Processing job '" + job.Id + "' in batch '" + job.BatchId + "'.");
-                _mapJob.DoWork(job);
+                var resultData = _mapJob.DoWork(job);
+                var result = new Result<U>(resultData, job.Id, job.BatchId);
+                _queueManager.AddCompleteJob(result);
                 _logger.Info(threadIdText + "Job '" + job.Id + "' in batch '" + job.BatchId + "' completed.");
                 cancellationToken.ThrowIfCancellationRequested();
             }
