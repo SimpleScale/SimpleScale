@@ -87,7 +87,7 @@ namespace SimpleScale.HeadNode.UnitTests
             headNode.StartHeadNode(cancellationTokenSource);
             _queueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
             _queueManager.AddCompleteJob(new Common.Result<int>(1, 2, _batch.Id));
-            Thread.Sleep(50);
+            Thread.Sleep(100);
 
             var batchProgress = headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(2, batchProgress.ListOfCompletedJobs.Count);
