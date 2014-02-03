@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>SimpleScale</id>
-    <version>0.1</version>
+    <version>$version$</version>
     <title>Simple Scale</title>
     <authors>Keith Harrison</authors>
     <owners>Keith Harrison</owners>

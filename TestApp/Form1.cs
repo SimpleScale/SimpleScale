@@ -17,18 +17,18 @@ namespace TestApp
     public partial class Form1 : Form
     {
         CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        MemoryQueueManager<Member> _queueManager = new MemoryQueueManager<Member>();
-        HeadNode<Member> _headNode;
+        MemoryQueueManager<Member, int> _queueManager = new MemoryQueueManager<Member, int>();
+        HeadNode<Member, int> _headNode;
 
         public Form1()
         {
             InitializeComponent();
-            _headNode = new HeadNode<Member>(_queueManager);
+            _headNode = new HeadNode<Member, int>(_queueManager);
         }
 
         private void StartButtonClick(object sender, EventArgs e)
         {
-            var workerNode = new WorkerNode<Member>(_queueManager, new ValueMemberMapJob());
+            var workerNode = new WorkerNode<Member, int>(_queueManager, new ValueMemberMapJob());
             workerNode.StartAsync(_cancellationTokenSource);
         }
 

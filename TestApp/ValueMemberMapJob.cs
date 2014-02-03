@@ -7,17 +7,19 @@ using SimpleScale.Common;
 
 namespace TestApp
 {
-    public class ValueMemberMapJob : IMapJob<Member>
+    public class ValueMemberMapJob : IMapJob<Member, int>
     {
-        public void DoWork(Job<Member> job)
+        public int DoWork(Job<Member> job)
         {
+            var total = 0;
             for (int i = 0; i < 50000000; i++)
-                DoNothing();
+                total += GetAge(job.Data);
+            return total;
         }
 
-        public void DoNothing()
+        public int GetAge(Member member)
         {
-            int i = 2 + 1;
+            return member.Age;
         }
     }
 }
