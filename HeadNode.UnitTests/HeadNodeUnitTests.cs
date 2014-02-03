@@ -12,10 +12,10 @@ namespace SimpleScale.HeadNode.UnitTests
     public class HeadNodeUnitTests
     {
         Common.MemoryQueueManager<int, int> _queueManager;
-        HeadNode.HeadNode<int, int> headNode;
+        HeadNode.HeadNode<int, int> _headNode;
         List<int> _jobDataList;
         Common.Batch<int> _batch;
-        CancellationTokenSource cancellationTokenSource;
+        CancellationTokenSource _cancellationTokenSource;
 
         [SetUp]
         public void Setup()
@@ -23,8 +23,8 @@ namespace SimpleScale.HeadNode.UnitTests
             _queueManager = new Common.MemoryQueueManager<int, int>();
             _jobDataList = new List<int> { 1, 2, 3 };
             _batch = new Common.Batch<int>(_jobDataList);
-            cancellationTokenSource = new CancellationTokenSource();
-            headNode = new HeadNode.HeadNode<int, int>(_queueManager);
+            _cancellationTokenSource = new CancellationTokenSource();
+            _headNode = new HeadNode.HeadNode<int, int>(_queueManager);
         }
 
         [Test]
@@ -37,15 +37,15 @@ namespace SimpleScale.HeadNode.UnitTests
         [Test]
         public void RunBatchWithOneItemBatchCountIsOne()
         {
-            headNode.RunBatch(_batch);
-            Assert.AreEqual(1, headNode.BatchProgressDictionary.Count);
+            _headNode.RunBatch(_batch);
+            Assert.AreEqual(1, _headNode.BatchProgressDictionary.Count);
         }
 
         [Test]
         public void RunBatchWithThreeItemsProgessIsZero()
         {
-            headNode.RunBatch(_batch);
-            var batchProgress = headNode.BatchProgressDictionary[_batch.Id];
+            _headNode.RunBatch(_batch);
+            var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(3, batchProgress.ItemsInBatch);
             Assert.AreEqual(0, batchProgress.ListOfCompletedJobs.Count);
         }
@@ -53,47 +53,47 @@ namespace SimpleScale.HeadNode.UnitTests
         [Test]
         public void RunBatchWithThreeItemsProgressJobProgessIsOne()
         {
-            headNode.RunBatch(_batch);
-            headNode.StartHeadNode(cancellationTokenSource);
+            _headNode.RunBatch(_batch);
+            _headNode.StartHeadNode(_cancellationTokenSource);
             _queueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
             Thread.Sleep(50);
 
-            var batchProgress = headNode.BatchProgressDictionary[_batch.Id];
+            var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs.Count);
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs[0]);
-            cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
         }
 
         [Test]
         public void RunBatchWithThreeItemsProgressSameJobTwiceJobProgessIsOne()
         {
-            headNode.RunBatch(_batch);
-            headNode.StartHeadNode(cancellationTokenSource);
+            _headNode.RunBatch(_batch);
+            _headNode.StartHeadNode(_cancellationTokenSource);
             var resultJob1 = new Common.Result<int>(1, 1, _batch.Id);
             _queueManager.AddCompleteJob(resultJob1);
             _queueManager.AddCompleteJob(resultJob1);
             Thread.Sleep(50);
 
-            var batchProgress = headNode.BatchProgressDictionary[_batch.Id];
+            var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs.Count);
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs[0]);
-            cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
         }
 
         [Test]
         public void RunBatchWithThreeItemsProgressTwoJobsJobProgessIsTwo()
         {
-            headNode.RunBatch(_batch);
-            headNode.StartHeadNode(cancellationTokenSource);
+            _headNode.RunBatch(_batch);
+            _headNode.StartHeadNode(_cancellationTokenSource);
             _queueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
             _queueManager.AddCompleteJob(new Common.Result<int>(1, 2, _batch.Id));
-            Thread.Sleep(100);
+            Thread.Sleep(50);
 
-            var batchProgress = headNode.BatchProgressDictionary[_batch.Id];
+            var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(2, batchProgress.ListOfCompletedJobs.Count);
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs[0]);
             Assert.AreEqual(2, batchProgress.ListOfCompletedJobs[1]);
-            cancellationTokenSource.Cancel();
+            _cancellationTokenSource.Cancel();
         }
     }
 }
