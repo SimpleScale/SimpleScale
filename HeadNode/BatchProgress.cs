@@ -9,5 +9,13 @@ namespace SimpleScale.HeadNode
     {
         public int ItemsInBatch;
         public List<int> ListOfCompletedJobs = new List<int>();
+
+        public bool BatchComplete
+        {
+            get
+            {
+                return ItemsInBatch == ListOfCompletedJobs.Count;
+            }
+        }
     }
 }

@@ -11,33 +11,53 @@ using System.Threading;
 using SimpleScale.HeadNode;
 using SimpleScale.Common;
 using SimpleScale.WorkerNode;
+using NLog;
 
 namespace TestApp
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         MemoryQueueManager<Member, int> _queueManager = new MemoryQueueManager<Member, int>();
         HeadNode<Member, int> _headNode;
+        private static Logger _logger;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
-            _headNode = new HeadNode<Member, int>(_queueManager);
         }
 
-        private void StartButtonClick(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            _logger = LogManager.GetCurrentClassLogger();
+            _headNode = new HeadNode<Member, int>(_queueManager);
+            _headNode.BatchComplete += HeadNodeBatchComplete;
+        }
+
+        void HeadNodeBatchComplete(object sender, BatchCompleteEventArgs e)
+        {
+            _logger.Info("Batch " + e.BatchID + " complete.");
+        }
+
+        private void StartWorkerNodeButtonClick(object sender, EventArgs e)
         {
             var workerNode = new WorkerNode<Member, int>(_queueManager, new ValueMemberMapJob());
             workerNode.StartAsync(_cancellationTokenSource);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void startHeadNodeButton_Click(object sender, EventArgs e)
+        {
+            var cancelationTokenSource = new CancellationTokenSource();
+            _headNode.StartHeadNode(cancelationTokenSource);
+            startHeadNodeButton.Enabled = false;
+        }
+
+        private void cancelButtonClick(object sender, EventArgs e)
         {
             _cancellationTokenSource.Cancel();
         }
 
-        private void addButton_Click(object sender, EventArgs e)
+        private void addBatchToQueueButtonClick(object sender, EventArgs e)
         {
             _headNode.RunBatch(GetBatch());
         }

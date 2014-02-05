@@ -11,26 +11,28 @@ namespace SimpleScale.HeadNode.UnitTests
     [TestFixture]
     public class HeadNodeUnitTests
     {
-        Common.MemoryQueueManager<int, int> _queueManager;
+        Common.MemoryQueueManager<int, int> _memoryQueueManager;
         HeadNode.HeadNode<int, int> _headNode;
         List<int> _jobDataList;
         Common.Batch<int> _batch;
         CancellationTokenSource _cancellationTokenSource;
+        Guid _batchId = Guid.NewGuid();
 
         [SetUp]
         public void Setup()
         {
-            _queueManager = new Common.MemoryQueueManager<int, int>();
+            _memoryQueueManager = new Common.MemoryQueueManager<int, int>();
+            _memoryQueueManager.SleepInterval = 0;
             _jobDataList = new List<int> { 1, 2, 3 };
             _batch = new Common.Batch<int>(_jobDataList);
             _cancellationTokenSource = new CancellationTokenSource();
-            _headNode = new HeadNode.HeadNode<int, int>(_queueManager);
+            _headNode = new HeadNode.HeadNode<int, int>(_memoryQueueManager);
         }
 
         [Test]
         public void TestCTor()
         {
-            var headNode = new HeadNode.HeadNode<int, int>(_queueManager);
+            var headNode = new HeadNode.HeadNode<int, int>(_memoryQueueManager);
             Assert.AreEqual(0, headNode.BatchProgressDictionary.Count);
         }
 
@@ -55,8 +57,8 @@ namespace SimpleScale.HeadNode.UnitTests
         {
             _headNode.RunBatch(_batch);
             _headNode.StartHeadNode(_cancellationTokenSource);
-            _queueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
-            Thread.Sleep(50);
+            _memoryQueueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
+            Thread.Sleep(10);
 
             var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs.Count);
@@ -70,9 +72,9 @@ namespace SimpleScale.HeadNode.UnitTests
             _headNode.RunBatch(_batch);
             _headNode.StartHeadNode(_cancellationTokenSource);
             var resultJob1 = new Common.Result<int>(1, 1, _batch.Id);
-            _queueManager.AddCompleteJob(resultJob1);
-            _queueManager.AddCompleteJob(resultJob1);
-            Thread.Sleep(50);
+            _memoryQueueManager.AddCompleteJob(resultJob1);
+            _memoryQueueManager.AddCompleteJob(resultJob1);
+            Thread.Sleep(10);
 
             var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs.Count);
@@ -85,15 +87,44 @@ namespace SimpleScale.HeadNode.UnitTests
         {
             _headNode.RunBatch(_batch);
             _headNode.StartHeadNode(_cancellationTokenSource);
-            _queueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
-            _queueManager.AddCompleteJob(new Common.Result<int>(1, 2, _batch.Id));
-            Thread.Sleep(50);
+            _memoryQueueManager.AddCompleteJob(new Common.Result<int>(1, 1, _batch.Id));
+            _memoryQueueManager.AddCompleteJob(new Common.Result<int>(1, 2, _batch.Id));
+            Thread.Sleep(30);
 
             var batchProgress = _headNode.BatchProgressDictionary[_batch.Id];
             Assert.AreEqual(2, batchProgress.ListOfCompletedJobs.Count);
             Assert.AreEqual(1, batchProgress.ListOfCompletedJobs[0]);
             Assert.AreEqual(2, batchProgress.ListOfCompletedJobs[1]);
             _cancellationTokenSource.Cancel();
+        }
+
+        [Test]
+        public void IfBatchNotCompleteDontRaiseEvent(){
+            _headNode.BatchProgressDictionary.Add(_batchId, new BatchProgress { ItemsInBatch = 1 });
+            _headNode.BatchComplete += batchCompleteFail;
+            _headNode.RaiseBatchCompleteEventIfBatchComplete(_batchId);
+            Assert.Pass();
+        }
+
+        void batchCompleteFail(object sender, BatchCompleteEventArgs e)
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public void IfBatchCompleteRaiseEvent()
+        {
+            var batchProgress = new BatchProgress { ItemsInBatch = 1 };
+            batchProgress.ListOfCompletedJobs.Add(1);
+            _headNode.BatchProgressDictionary.Add(_batchId, batchProgress);
+            _headNode.BatchComplete += batchCompletePass;
+            _headNode.RaiseBatchCompleteEventIfBatchComplete(_batchId);
+            Assert.Fail();
+        }
+
+        void batchCompletePass(object sender, BatchCompleteEventArgs e)
+        {
+            Assert.Pass();
         }
     }
 }

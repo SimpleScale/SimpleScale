@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BatchCompleteEventArgs.cs" />
     <Compile Include="BatchProgress.cs" />
     <Compile Include="HeadNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

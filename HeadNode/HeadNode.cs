@@ -12,11 +12,14 @@ namespace SimpleScale.HeadNode
 {
     public class HeadNode<T, U>
     {
+        public IDictionary<Guid, BatchProgress> BatchProgressDictionary = new Dictionary<Guid, BatchProgress>();
+
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IQueueManager<T, U> _queueManager;
         private Task _thread { get; set; }
 
-        public IDictionary<Guid, BatchProgress> BatchProgressDictionary = new Dictionary<Guid, BatchProgress>();
+        public delegate void BatchCompleteEventHandler(object sender, BatchCompleteEventArgs e);
+        public event BatchCompleteEventHandler BatchComplete;
 
         public HeadNode(IQueueManager<T, U> queueManager)
         {
@@ -26,7 +29,7 @@ namespace SimpleScale.HeadNode
         public void RunBatch(Batch<T> batch)
         {
             _logger.Info("Adding batch '" + batch.Id + "' to queue...");
-            var jobs = batch.JobDataList.Select((jobData, index) => new Job<T>(jobData, index, batch.Id)).ToList();
+            var jobs = batch.JobDataList.Select((jobData, index) => new Job<T>(jobData, index+1, batch.Id)).ToList();
             var batchProgress = new BatchProgress{ ItemsInBatch = batch.JobDataList.Count };
             BatchProgressDictionary.Add(batch.Id, batchProgress);
             _queueManager.AddJobs(jobs);
@@ -38,15 +41,14 @@ namespace SimpleScale.HeadNode
             Task.Factory.StartNew(() => StartHeadNodeAsync(token), token);
         }
 
-        public void StartHeadNodeAsync(CancellationToken token)
+        private void StartHeadNodeAsync(CancellationToken token)
         {
             _logger.Info("Head node thread started.");
             while (true)
             {
                 var completedJobResult = _queueManager.ReadCompletedJob();
-                var batchProgress = BatchProgressDictionary[completedJobResult.BatchId];
-                if (batchProgress.ListOfCompletedJobs.Contains(completedJobResult.Id) == false)
-                    batchProgress.ListOfCompletedJobs.Add(completedJobResult.Id);
+                AddCompletedJobOnce(completedJobResult, completedJobResult.BatchId);
+                RaiseBatchCompleteEventIfBatchComplete(completedJobResult.BatchId);
                 if (token.IsCancellationRequested)
                 {
                     _logger.Info("Head node thread cancelled.");
@@ -56,5 +58,26 @@ namespace SimpleScale.HeadNode
             }
         }
 
+        private void AddCompletedJobOnce(Result<U> completedJobResult, Guid batchId)
+        {
+            var batchProgress = BatchProgressDictionary[batchId];
+            if (batchProgress.ListOfCompletedJobs.Contains(completedJobResult.Id) == false)
+                batchProgress.ListOfCompletedJobs.Add(completedJobResult.Id);
+        }
+
+        internal void RaiseBatchCompleteEventIfBatchComplete(Guid batchId)
+        {
+            if (BatchProgressDictionary[batchId].BatchComplete)
+                RaiseBatchCompleteEvent(batchId);
+        }
+
+        private void RaiseBatchCompleteEvent(Guid batchId)
+        {
+            if (BatchComplete != null)
+            {
+                var batchCompleteEventArgs = new BatchCompleteEventArgs(batchId);
+                BatchComplete(this, batchCompleteEventArgs);
+            }
+        }
     }
 }

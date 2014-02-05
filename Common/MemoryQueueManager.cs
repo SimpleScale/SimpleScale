@@ -14,8 +14,9 @@ namespace SimpleScale.Common
         public static Logger _logger = LogManager.GetCurrentClassLogger();
         private ConcurrentQueue<Job<T>> _jobs = new ConcurrentQueue<Job<T>>();
         private ConcurrentQueue<Result<U>> _completedJobs = new ConcurrentQueue<Result<U>>();
+        
         public MemoryQueueManager() { }
-
+        public int SleepInterval = 100;
         public void AddJobs(List<Job<T>> jobs)
         {
             jobs.ForEach(j => _jobs.Enqueue(j));
@@ -29,7 +30,7 @@ namespace SimpleScale.Common
             {
                 if (_jobs.TryDequeue(out returnValue))
                     return returnValue;
-                Thread.Sleep(25);
+                Thread.Sleep(SleepInterval);
             }
         }
 
@@ -46,7 +47,7 @@ namespace SimpleScale.Common
             {
                 if (_completedJobs.TryDequeue(out returnValue))
                     return returnValue;
-                Thread.Sleep(25);
+                Thread.Sleep(SleepInterval);
             }
         }
     }
