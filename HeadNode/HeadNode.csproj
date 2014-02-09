@@ -58,6 +58,10 @@
       <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Queues\Queues.csproj">
+      <Project>{ae8a32bc-5aa0-4be6-8523-2eef683d35cf}</Project>
+      <Name>Queues</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WorkerNode\WorkerNode.csproj">
       <Project>{d4afa96e-d09f-4a1a-b132-965f341c9920}</Project>
       <Name>WorkerNode</Name>

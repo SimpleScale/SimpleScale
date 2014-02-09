@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="WorkerNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WorkerProgressEventArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{d92efe92-1438-40a9-a01a-5ffa2a4bc0fa}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Queues\Queues.csproj">
+      <Project>{ae8a32bc-5aa0-4be6-8523-2eef683d35cf}</Project>
+      <Name>Queues</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -19,6 +19,7 @@
       <reference file="SimpleScale.Common.dll" />
       <reference file="SimpleScale.WorkerNode.dll" />
       <reference file="SimpleScale.HeadNode.dll" />
+      <reference file="SimpleScale.Queues.dll" />
     </references>
   </metadata>
 </package>

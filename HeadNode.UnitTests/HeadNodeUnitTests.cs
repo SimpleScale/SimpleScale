@@ -6,12 +6,14 @@ using System.Threading;
 
 using NUnit.Framework;
 
+using SimpleScale.Queues;
+
 namespace SimpleScale.HeadNode.UnitTests
 {
     [TestFixture]
     public class HeadNodeUnitTests
     {
-        Common.MemoryQueueManager<int, int> _memoryQueueManager;
+        MemoryQueueManager<int, int> _memoryQueueManager;
         HeadNode.HeadNode<int, int> _headNode;
         List<int> _jobDataList;
         Common.Batch<int> _batch;
@@ -21,7 +23,7 @@ namespace SimpleScale.HeadNode.UnitTests
         [SetUp]
         public void Setup()
         {
-            _memoryQueueManager = new Common.MemoryQueueManager<int, int>();
+            _memoryQueueManager = new MemoryQueueManager<int, int>();
             _memoryQueueManager.SleepInterval = 0;
             _jobDataList = new List<int> { 1, 2, 3 };
             _batch = new Common.Batch<int>(_jobDataList);

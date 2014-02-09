@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NLog;
 
 using SimpleScale.Common;
+using SimpleScale.Queues;
 
 namespace SimpleScale.HeadNode
 {

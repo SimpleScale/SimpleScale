@@ -8,10 +8,12 @@ using System.Text;
 using System.Windows.Forms;
 using System.Threading;
 
+using NLog;
+
 using SimpleScale.HeadNode;
 using SimpleScale.Common;
 using SimpleScale.WorkerNode;
-using NLog;
+using SimpleScale.Queues;
 
 namespace TestApp
 {

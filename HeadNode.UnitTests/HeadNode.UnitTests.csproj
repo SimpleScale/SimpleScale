@@ -59,6 +59,10 @@
       <Project>{3e582d6a-a350-4108-8d5a-295c7be890b0}</Project>
       <Name>HeadNode</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Queues\Queues.csproj">
+      <Project>{ae8a32bc-5aa0-4be6-8523-2eef683d35cf}</Project>
+      <Name>Queues</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

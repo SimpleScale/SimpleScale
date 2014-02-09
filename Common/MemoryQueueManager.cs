@@ -9,13 +9,13 @@ using NLog;
 
 namespace SimpleScale.Common
 {
-    public class MemoryQueueManager<T, U> : IQueueManager<T, U>
+    public class MemoryQueueManager1<T, U> : IQueueManager1<T, U>
     {
         public static Logger _logger = LogManager.GetCurrentClassLogger();
         private ConcurrentQueue<Job<T>> _jobs = new ConcurrentQueue<Job<T>>();
         private ConcurrentQueue<Result<U>> _completedJobs = new ConcurrentQueue<Result<U>>();
         
-        public MemoryQueueManager() { }
+        public MemoryQueueManager1() { }
         public int SleepInterval = 100;
         public void AddJobs(List<Job<T>> jobs)
         {
@@ -23,15 +23,16 @@ namespace SimpleScale.Common
             _logger.Info(_jobs.Count + " jobs in the queue.");
         }
 
-        public Job<T> ReadJob()
+        public bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
         {
-            Job<T> returnValue;
-            while (true)
+            if (_jobs.TryDequeue(out job))
             {
-                if (_jobs.TryDequeue(out returnValue))
-                    return returnValue;
-                Thread.Sleep(SleepInterval);
+                result = doWork(job);
+                return true;
             }
+            result = default(U);
+            Thread.Sleep(SleepInterval);
+            return false;
         }
 
         public void AddCompleteJob(Result<U> result)
