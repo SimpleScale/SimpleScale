@@ -53,5 +53,9 @@ namespace SimpleScale.Queues
                 Thread.Sleep(SleepInterval);
             }
         }
+
+        public void Dispose()
+        {            
+        }
     }
 }
