@@ -14,15 +14,17 @@ using SimpleScale.HeadNode;
 using SimpleScale.Common;
 using SimpleScale.WorkerNode;
 using SimpleScale.Queues;
+using System.Configuration;
 
 namespace TestApp
 {
     public partial class MainForm : Form
     {
-        CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        MemoryQueueManager<Member, int> _queueManager = new MemoryQueueManager<Member, int>();
-        HeadNode<Member, int> _headNode;
         private static Logger _logger;
+        
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private IQueueManager<Member, int> _queueManager;
+        private HeadNode<Member, int> _headNode;
 
         public MainForm()
         {
@@ -32,13 +34,35 @@ namespace TestApp
         private void MainForm_Load(object sender, EventArgs e)
         {
             _logger = LogManager.GetCurrentClassLogger();
-            _headNode = new HeadNode<Member, int>(_queueManager);
-            _headNode.BatchComplete += HeadNodeBatchComplete;
+
+            CreateQueueManger();
+            CreateHeadNode();
         }
 
-        void HeadNodeBatchComplete(object sender, BatchCompleteEventArgs e)
+        private void CreateQueueManger()
         {
-            _logger.Info("Batch " + e.BatchID + " complete.");
+            //_queueManager = new MemoryQueueManager<Member, int>();
+            _queueManager = CreateServiceBusQueue();
+        }
+
+        private void CreateHeadNode()
+        {
+            _headNode = new HeadNode<Member, int>(_queueManager);
+            _headNode.JobComplete += HeadNodeJobComplete;
+        }
+
+        private IQueueManager<Member, int> CreateServiceBusQueue()
+        {
+            var workQueueName = "Work";
+            var workCompletedQueueName = "WorkCompleted";
+            var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
+            return new ServiceBusQueueManager<Member, int>(serviceBusConnectionString,
+                workQueueName, workCompletedQueueName);
+        }
+
+        void HeadNodeJobComplete(object sender, JobCompleteEventArgs<int> e)
+        {
+            _logger.Info("Job " + e.Result.Id + " complete in batch " + e.Result.BatchId + ".");
         }
 
         private void StartWorkerNodeButtonClick(object sender, EventArgs e)
@@ -77,7 +101,12 @@ namespace TestApp
                 CreateMember("Dick"),
                 CreateMember("Harry"),
                 CreateMember("Jane"),
-                CreateMember("Anne")
+                CreateMember("Anne"),
+                CreateMember("Bill"),
+                CreateMember("Jim"),
+                CreateMember("Jill"),
+                CreateMember("Mary"),
+                CreateMember("Bob")
             };
 
             return new Batch<Member>(jobDataList);

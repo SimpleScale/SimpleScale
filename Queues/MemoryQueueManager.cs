@@ -43,15 +43,12 @@ namespace SimpleScale.Queues
             _logger.Info(result.Id + " completed.");
         }
 
-        public Result<U> ReadCompletedJob()
+        public bool ReadCompletedJob(out Result<U> result)
         {
-            Result<U> returnValue;
-            while (true)
-            {
-                if (_completedJobs.TryDequeue(out returnValue))
-                    return returnValue;
-                Thread.Sleep(SleepInterval);
-            }
+            Thread.Sleep(SleepInterval);
+            if (_completedJobs.TryDequeue(out result))
+                return true;
+            return false;
         }
 
         public void Dispose()

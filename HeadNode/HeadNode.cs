@@ -13,14 +13,12 @@ namespace SimpleScale.HeadNode
 {
     public class HeadNode<T, U>
     {
-        public IDictionary<Guid, BatchProgress> BatchProgressDictionary = new Dictionary<Guid, BatchProgress>();
-
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IQueueManager<T, U> _queueManager;
         private Task _thread { get; set; }
 
-        public delegate void BatchCompleteEventHandler(object sender, BatchCompleteEventArgs e);
-        public event BatchCompleteEventHandler BatchComplete;
+        public delegate void JobCompleteEventHandler(object sender, JobCompleteEventArgs<U> e);
+        public event JobCompleteEventHandler JobComplete;
 
         public HeadNode(IQueueManager<T, U> queueManager)
         {
@@ -31,8 +29,6 @@ namespace SimpleScale.HeadNode
         {
             _logger.Info("Adding batch '" + batch.Id + "' to queue...");
             var jobs = batch.JobDataList.Select((jobData, index) => new Job<T>(jobData, index+1, batch.Id)).ToList();
-            var batchProgress = new BatchProgress{ ItemsInBatch = batch.JobDataList.Count };
-            BatchProgressDictionary.Add(batch.Id, batchProgress);
             _queueManager.AddJobs(jobs);
         }
 
@@ -47,9 +43,11 @@ namespace SimpleScale.HeadNode
             _logger.Info("Head node thread started.");
             while (true)
             {
-                var completedJobResult = _queueManager.ReadCompletedJob();
-                AddCompletedJobOnce(completedJobResult, completedJobResult.BatchId);
-                RaiseBatchCompleteEventIfBatchComplete(completedJobResult.BatchId);
+                
+                Result<U> completedJobResult;
+                if (!_queueManager.ReadCompletedJob(out completedJobResult))
+                    continue;
+                RaiseJobCompleteEvent(completedJobResult);
                 if (token.IsCancellationRequested)
                 {
                     _logger.Info("Head node thread cancelled.");
@@ -59,25 +57,12 @@ namespace SimpleScale.HeadNode
             }
         }
 
-        private void AddCompletedJobOnce(Result<U> completedJobResult, Guid batchId)
+        private void RaiseJobCompleteEvent(Result<U> result)
         {
-            var batchProgress = BatchProgressDictionary[batchId];
-            if (batchProgress.ListOfCompletedJobs.Contains(completedJobResult.Id) == false)
-                batchProgress.ListOfCompletedJobs.Add(completedJobResult.Id);
-        }
-
-        internal void RaiseBatchCompleteEventIfBatchComplete(Guid batchId)
-        {
-            if (BatchProgressDictionary[batchId].BatchComplete)
-                RaiseBatchCompleteEvent(batchId);
-        }
-
-        private void RaiseBatchCompleteEvent(Guid batchId)
-        {
-            if (BatchComplete != null)
+            if (JobComplete != null)
             {
-                var batchCompleteEventArgs = new BatchCompleteEventArgs(batchId);
-                BatchComplete(this, batchCompleteEventArgs);
+                var jobCompleteEventArgs = new JobCompleteEventArgs<U>(result);
+                JobComplete(this, jobCompleteEventArgs);
             }
         }
     }

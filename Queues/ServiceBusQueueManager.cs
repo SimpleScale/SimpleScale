@@ -58,10 +58,14 @@ namespace SimpleScale.Queues
             _logger.Info(result.Id + " completed.");
         }
 
-        public Result<U> ReadCompletedJob()
+        public bool ReadCompletedJob(out Result<U> result)
         {
-            Result<U> returnValue = null;
-            return returnValue;
+            result = null;
+            var message = _workCompletedQueueClient.Receive(new TimeSpan(0, 0, 0, 2));
+            if (message == null)
+                return false;
+            result = message.GetBody<Result<U>>();
+            return true;
         }
         
         public void Dispose()
