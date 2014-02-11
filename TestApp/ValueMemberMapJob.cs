@@ -11,15 +11,15 @@ namespace TestApp
     {
         public int DoWork(Job<Member> job)
         {
-            var total = 0;
-            for (int i = 0; i < 50000000; i++)
+            var total = 0.0;
+            for (int i = 0; i < 500000000; i++)
                 total += GetAge(job.Data);
-            return total;
+            return Convert.ToInt32(total);
         }
 
-        public int GetAge(Member member)
+        public double GetAge(Member member)
         {
-            return member.Age;
+            return (member.Age * 0.1) / 2.0;
         }
     }
 }

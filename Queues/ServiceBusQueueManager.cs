@@ -65,6 +65,7 @@ namespace SimpleScale.Queues
             if (message == null)
                 return false;
             result = message.GetBody<Result<U>>();
+            _workCompletedQueueClient.Complete(message.LockToken);
             return true;
         }
         
