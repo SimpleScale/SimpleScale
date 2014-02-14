@@ -27,13 +27,12 @@ namespace SimpleScale.WorkerNode
             _mapJob = mapJob;
         }
 
-        public void StartAsync(CancellationTokenSource cancellationTokenSource)
+        public void StartAsync()
         {
-            var token = cancellationTokenSource.Token;
-            Task.Factory.StartNew(() => Start(token), token);
+            Task.Factory.StartNew(Start);
         }
 
-        public void Start(CancellationToken cancellationToken)
+        public void Start()
         {
             LogAndRaiseProgressEvent(ProgressType.WorkerNodeStarted, "Worker node started");
             while (true)
@@ -49,7 +48,6 @@ namespace SimpleScale.WorkerNode
                     var result = new Result<U>(resultData, job.Id, job.BatchId);
                     _queueManager.AddCompleteJob(result);
                     LogAndRaiseProgressEvent(ProgressType.WorkCompleted, "Work completed", job.BatchId, job.Id);
-                    cancellationToken.ThrowIfCancellationRequested();
                 }
                 catch (Exception ex)
                 {

@@ -24,22 +24,20 @@ namespace SimpleScale.HeadNode
         {
             _queueManager = queueManager;
         }
-
+        
         public void RunBatch(Batch<T> batch)
         {
             _logger.Info("Adding batch '" + batch.Id + "' to queue...");
-            var jobs = batch.JobDataList.Select((jobData, index) => new Job<T>(jobData, index+1, batch.Id)).ToList();
-            _queueManager.AddJobs(jobs);
-            _logger.Info(jobs.Count + " jobs added to queue.");
+            _queueManager.AddJobs(batch.Jobs);
+            _logger.Info(batch.Jobs.Count + " jobs added to queue.");
         }
 
-        public void StartHeadNode(CancellationTokenSource cancellationTokenSource)
+        public void StartHeadNode()
         {
-            CancellationToken token = cancellationTokenSource.Token;
-            Task.Factory.StartNew(() => StartHeadNodeAsync(token), token);
+            Task.Factory.StartNew(StartHeadNodeAsync);
         }
 
-        private void StartHeadNodeAsync(CancellationToken token)
+        private void StartHeadNodeAsync()
         {
             _logger.Info("Head node thread started.");
             while (true)
@@ -49,12 +47,6 @@ namespace SimpleScale.HeadNode
                 if (!_queueManager.ReadCompletedJob(out completedJobResult))
                     continue;
                 RaiseJobCompleteEvent(completedJobResult);
-                if (token.IsCancellationRequested)
-                {
-                    _logger.Info("Head node thread cancelled.");
-                    break;
-                }
-                Thread.Sleep(20);
             }
         }
 

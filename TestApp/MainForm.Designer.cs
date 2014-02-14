@@ -30,7 +30,6 @@
         {
             this.startWorkerNodeButton = new System.Windows.Forms.Button();
             this.logTextBox = new System.Windows.Forms.RichTextBox();
-            this.cancelButton = new System.Windows.Forms.Button();
             this.addBatchToQueueButton = new System.Windows.Forms.Button();
             this.startHeadNodeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -58,17 +57,6 @@
             this.logTextBox.TabIndex = 1;
             this.logTextBox.Text = "";
             this.logTextBox.TextChanged += new System.EventHandler(this.logTextBox_TextChanged);
-            // 
-            // cancelButton
-            // 
-            this.cancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.cancelButton.Location = new System.Drawing.Point(610, 266);
-            this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(192, 90);
-            this.cancelButton.TabIndex = 2;
-            this.cancelButton.Text = "Cancel";
-            this.cancelButton.UseVisualStyleBackColor = true;
-            this.cancelButton.Click += new System.EventHandler(this.cancelButtonClick);
             // 
             // addBatchToQueueButton
             // 
@@ -101,7 +89,6 @@
             this.ClientSize = new System.Drawing.Size(814, 368);
             this.Controls.Add(this.startHeadNodeButton);
             this.Controls.Add(this.addBatchToQueueButton);
-            this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.startWorkerNodeButton);
             this.Name = "MainForm";
@@ -115,7 +102,6 @@
 
         private System.Windows.Forms.Button startWorkerNodeButton;
         private System.Windows.Forms.RichTextBox logTextBox;
-        private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Button addBatchToQueueButton;
         private System.Windows.Forms.Button startHeadNodeButton;
     }

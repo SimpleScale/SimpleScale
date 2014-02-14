@@ -22,7 +22,6 @@ namespace TestApp
     {
         private static Logger _logger;
         
-        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         private IQueueManager<Member, int> _queueManager;
         private HeadNode<Member, int> _headNode;
 
@@ -68,19 +67,14 @@ namespace TestApp
         private void StartWorkerNodeButtonClick(object sender, EventArgs e)
         {
             var workerNode = new WorkerNode<Member, int>(_queueManager, new ValueMemberMapJob());
-            workerNode.StartAsync(_cancellationTokenSource);
+            workerNode.StartAsync();
         }
 
         private void startHeadNodeButton_Click(object sender, EventArgs e)
         {
             var cancelationTokenSource = new CancellationTokenSource();
-            _headNode.StartHeadNode(cancelationTokenSource);
+            _headNode.StartHeadNode();
             startHeadNodeButton.Enabled = false;
-        }
-
-        private void cancelButtonClick(object sender, EventArgs e)
-        {
-            _cancellationTokenSource.Cancel();
         }
 
         private void addBatchToQueueButtonClick(object sender, EventArgs e)
