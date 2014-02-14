@@ -14,8 +14,6 @@ namespace SimpleScale.Queues
 {
     public class ServiceBusQueueManager<T, U> : IQueueManager<T, U> 
     {
-        public static Logger _logger = LogManager.GetCurrentClassLogger();
-
         private readonly NamespaceManager _namespaceManager;
         private readonly MessagingFactory _messagingFactory;
         private readonly QueueClient _workQueueClient;
@@ -34,7 +32,6 @@ namespace SimpleScale.Queues
         {
             var messagesList = jobs.Select(job => new BrokeredMessage(job));
             _workQueueClient.SendBatch(messagesList);
-            _logger.Info(jobs.Count + " jobs added to queue.");
         }
 
         public bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
@@ -45,9 +42,7 @@ namespace SimpleScale.Queues
             if (message == null)
                 return false;
             job = message.GetBody<Job<T>>();
-            _logger.Info(job.Id + " started.");
             result = doWork(job);
-            _logger.Info(job.Id + " completed.");
             _workQueueClient.Complete(message.LockToken);
             return true;
         }
@@ -55,7 +50,6 @@ namespace SimpleScale.Queues
         public void AddCompleteJob(Result<U> result)
         {
             _workCompletedQueueClient.Send(new BrokeredMessage(result));
-            _logger.Info(result.Id + " completed.");
         }
 
         public bool ReadCompletedJob(out Result<U> result)

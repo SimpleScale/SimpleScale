@@ -13,7 +13,6 @@ namespace SimpleScale.Queues
 {
     public class MemoryQueueManager<T, U> : IQueueManager<T, U>
     {
-        public static Logger _logger = LogManager.GetCurrentClassLogger();
         private ConcurrentQueue<Job<T>> _jobs = new ConcurrentQueue<Job<T>>();
         private ConcurrentQueue<Result<U>> _completedJobs = new ConcurrentQueue<Result<U>>();
         
@@ -22,7 +21,6 @@ namespace SimpleScale.Queues
         public void AddJobs(List<Job<T>> jobs)
         {
             jobs.ForEach(j => _jobs.Enqueue(j));
-            _logger.Info(_jobs.Count + " jobs in the queue.");
         }
 
         public bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
@@ -40,7 +38,6 @@ namespace SimpleScale.Queues
         public void AddCompleteJob(Result<U> result)
         {
             _completedJobs.Enqueue(result);
-            _logger.Info(result.Id + " completed.");
         }
 
         public bool ReadCompletedJob(out Result<U> result)

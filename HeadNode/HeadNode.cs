@@ -30,6 +30,7 @@ namespace SimpleScale.HeadNode
             _logger.Info("Adding batch '" + batch.Id + "' to queue...");
             var jobs = batch.JobDataList.Select((jobData, index) => new Job<T>(jobData, index+1, batch.Id)).ToList();
             _queueManager.AddJobs(jobs);
+            _logger.Info(jobs.Count + " jobs added to queue.");
         }
 
         public void StartHeadNode(CancellationTokenSource cancellationTokenSource)
