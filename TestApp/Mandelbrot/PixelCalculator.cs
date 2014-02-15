@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using SimpleScale.Common;
+using System.IO;
+using System.Drawing.Imaging;
 
 namespace TestApp.Mandelbrot
 {
@@ -14,19 +16,32 @@ namespace TestApp.Mandelbrot
 
         public PixelCalculationResult DoWork(Job<PixelCalculationInput> job)
         {
-            return CalculatePixelColour(job.Data);
+            return GenerateRectangleOfPixels(job.Data);
         }
 
-        public PixelCalculationResult CalculatePixelColour(PixelCalculationInput input)
+        public PixelCalculationResult GenerateRectangleOfPixels(PixelCalculationInput input)
         {
-            var colours = new List<double>();
-            for (int x = 0; x < input.Width; x++)
+            var height = input.EndY - input.StartY;
+            var bitmap = new Bitmap(input.Width, height);
+            for (int y = 0; y < height; y++)
             {
-                double s = (x - input.Width / 2) * input.Scale;
-                double colour = CalcMandelbrotSetColor(new ComplexNumber(s, input.ScaledPoint));
-                colours.Add(colour);
+                var yOffset = y + input.StartY;
+                double scaledPoint = (input.Height / 2 - yOffset) * input.Scale;
+                for (int x = 0; x < input.Width; x++)
+                {
+                    var colour = CalculatePixelColour(input, x, y, scaledPoint);
+                    bitmap.SetPixel(x, y, colour);
+                }
             }
-            return new PixelCalculationResult {Y = input.Y, Colours = colours.ToArray() };
+            var jpeg = ConvertBitmapToJpeg(bitmap);
+            return new PixelCalculationResult { Y = input.StartY, JpgImage = jpeg };
+        }
+
+        private Color CalculatePixelColour(PixelCalculationInput input, int x, int y, double scaledPoint)
+        {
+            var s = (x - input.Width / 2) * input.Scale;
+            var colour = CalcMandelbrotSetColor(new ComplexNumber(s, scaledPoint));
+            return ConvertDoubleToColour(colour);
         }
 
         private double CalcMandelbrotSetColor(ComplexNumber c)
@@ -47,5 +62,26 @@ namespace TestApp.Mandelbrot
                 return 0; // black
         }
 
+        private Color ConvertDoubleToColour(double value)
+        {
+            const double MaxColor = 256;
+            const double ContrastValue = 0.2;
+            return Color.FromArgb(0, 0,
+                (int)(MaxColor * Math.Pow(value, ContrastValue)));
+        }
+
+        private static byte[] ConvertBitmapToJpeg(Bitmap bitmap)
+        {
+            var qualityEncoder = System.Drawing.Imaging.Encoder.Quality;
+
+            var encoderParameters = new EncoderParameters(1);
+            encoderParameters.Param[0] = new EncoderParameter(qualityEncoder, 50L);
+
+            var image = Image.FromHbitmap(bitmap.GetHbitmap());
+            var memoryStream = new MemoryStream();
+            image.Save(memoryStream, ImageFormat.Png);
+            memoryStream.Position = 0;
+            return memoryStream.GetBuffer();
+        }
     }
 }

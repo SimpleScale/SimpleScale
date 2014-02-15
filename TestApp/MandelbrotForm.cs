@@ -17,6 +17,7 @@ using SimpleScale.WorkerNode;
 using SimpleScale.Queues;
 
 using TestApp.Mandelbrot;
+using System.IO;
 
 namespace TestApp
 {
@@ -52,6 +53,7 @@ namespace TestApp
         private void startHeadNodeButton_Click(object sender, EventArgs e)
         {
             CreateHeadNode();
+            this.startHeadNodeButton.Enabled = false;
         }
 
         private void mandelbrotPictureBox_Paint(object sender, PaintEventArgs e)
@@ -94,21 +96,24 @@ namespace TestApp
                 Invoke(new Action(() => PaintPixel(pixelResult)));
                 return;
             }
-
-            for (int x = 0; x < pixelResult.Colours.Length; x++)
-            {
-                var colour = GetColor(pixelResult.Colours[x]);
-                _mandelbrotBitmap.SetPixel(x, pixelResult.Y, colour);
-            }
+            var memoryStream = new MemoryStream(pixelResult.JpgImage);
+            var jpgImage = Image.FromStream(memoryStream);
+            var bitmap = new Bitmap(jpgImage);
+            CopyRegionIntoImage(bitmap, new Rectangle(0 ,0, bitmap.Width, bitmap.Height), ref _mandelbrotBitmap,
+                new Rectangle(0, pixelResult.Y, bitmap.Width, bitmap.Height));
+            //for (int x = 0; x < pixelResult.Colours.Length; x++)
+            //{
+            //    var colour = GetColor(pixelResult.Colours[x]);
+            //}
             this.Refresh();
         }
 
-        private Color GetColor(double value)
+        private static void CopyRegionIntoImage(Bitmap srcBitmap, Rectangle srcRegion, ref Bitmap destBitmap, Rectangle destRegion)
         {
-            const double MaxColor = 256;
-            const double ContrastValue = 0.2;
-            return Color.FromArgb(0, 0,
-                (int)(MaxColor * Math.Pow(value, ContrastValue)));
+            using (Graphics grD = Graphics.FromImage(destBitmap))
+            {
+                grD.DrawImage(srcBitmap, destRegion, srcRegion, GraphicsUnit.Pixel);
+            }
         }
 
         private void generateMandelbrotButton_Click(object sender, EventArgs e)

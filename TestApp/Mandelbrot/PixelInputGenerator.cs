@@ -13,16 +13,18 @@ namespace TestApp.Mandelbrot
         {
             var listOfInputs = new List<PixelCalculationInput>();
             double scale = 2 * MaxValueExtent / Math.Min(width, height);
-            for (int y = 0; y < height; y++)
+            for (int y = 0; y < height; y=y+10)
             {
-                double scaledPoint = (height / 2 - y) * scale;
-
+                var endY = y + 10;
+                if (endY > height)
+                    endY = height;
                 var input = new PixelCalculationInput
                 {
-                    Y = y,
-                    ScaledPoint = scaledPoint,
                     Scale = scale,
-                    Width = width
+                    Width = width,
+                    Height = height,
+                    StartY = y,
+                    EndY = endY
                 };
                 listOfInputs.Add(input);
             }

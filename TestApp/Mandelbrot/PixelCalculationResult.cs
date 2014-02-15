@@ -6,6 +6,6 @@ namespace TestApp.Mandelbrot
     public class PixelCalculationResult
     {
         public int Y;
-        public double[] Colours;
+        public byte[] JpgImage;
     }
 }
