@@ -51,7 +51,7 @@ namespace TestApp.Mandelbrot
             const double MaxColor = 256;
             const double ContrastValue = 0.2;
             var colourValue = (int)(MaxColor * Math.Pow(value, ContrastValue));
-            return Color.FromArgb((int)(colourValue % 128 * 2), (int)(colourValue % 32 * 7), (int)(colourValue % 16 * 14));
+            return Color.FromArgb(0, colourValue, colourValue);
         }
     }
 }
