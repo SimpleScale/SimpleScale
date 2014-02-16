@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace TestApp.Mandelbrot
 {
-    public class PixelCalculationResult
+    public class MandelbrotCalculationResult
     {
         public int Y;
         public byte[] JpgImage;

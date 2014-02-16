@@ -86,11 +86,13 @@
     <Compile Include="MandelbrotForm.Designer.cs">
       <DependentUpon>MandelbrotForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Mandelbrot\Common.cs" />
     <Compile Include="Mandelbrot\ComplexNumber.cs" />
-    <Compile Include="Mandelbrot\PixelCalculationInput.cs" />
-    <Compile Include="Mandelbrot\PixelCalculator.cs" />
-    <Compile Include="Mandelbrot\PixelInputGenerator.cs" />
-    <Compile Include="Mandelbrot\PixelCalculationResult.cs" />
+    <Compile Include="Mandelbrot\MadelbrotRowCalculator.cs" />
+    <Compile Include="Mandelbrot\MandelbrotCalculationInput.cs" />
+    <Compile Include="Mandelbrot\MandelbrotCalculator.cs" />
+    <Compile Include="Mandelbrot\InputGenerator.cs" />
+    <Compile Include="Mandelbrot\MandelbrotCalculationResult.cs" />
     <Compile Include="Member.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

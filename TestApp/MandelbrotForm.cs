@@ -26,8 +26,8 @@ namespace TestApp
         private static Logger _logger;
 
         Bitmap _mandelbrotBitmap;
-        private IQueueManager<PixelCalculationInput, PixelCalculationResult> _queueManager;
-        private HeadNode<PixelCalculationInput, PixelCalculationResult> _headNode;
+        private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> _queueManager;
+        private HeadNode<MandelbrotCalculationInput, MandelbrotCalculationResult> _headNode;
 
         public MandelbrotForm()
         {
@@ -45,7 +45,7 @@ namespace TestApp
 
         private void CreateQueueManger()
         {
-            //_queueManager = new MemoryQueueManager<PixelCalculationInput, PixelCalculationResult> { SleepInterval = 0 };
+            //_queueManager = new MemoryQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> { SleepInterval = 0 };
             
             _queueManager = CreateServiceBusQueue();
         }
@@ -63,33 +63,33 @@ namespace TestApp
 
         private void CreateHeadNode()
         {
-            _headNode = new HeadNode<PixelCalculationInput, PixelCalculationResult>(_queueManager);
+            _headNode = new HeadNode<MandelbrotCalculationInput, MandelbrotCalculationResult>(_queueManager);
             _headNode.JobComplete += HeadNodeJobComplete;
             _headNode.StartHeadNode();
         }
 
-        void HeadNodeJobComplete(object sender, JobCompleteEventArgs<PixelCalculationResult> e)
+        void HeadNodeJobComplete(object sender, JobCompleteEventArgs<MandelbrotCalculationResult> e)
         {
             PaintPixel(e.Result.Data);
             //_logger.Info("Job " + e.Result.Id + " complete in batch " + e.Result.BatchId + ".");
         }
 
-        private IQueueManager<PixelCalculationInput, PixelCalculationResult> CreateServiceBusQueue()
+        private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> CreateServiceBusQueue()
         {
             var workQueueName = "PixelCalculationWork";
             var workCompletedQueueName = "PixelCalculationWorkCompleted";
             var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
-            return new ServiceBusQueueManager<PixelCalculationInput, PixelCalculationResult>(serviceBusConnectionString,
+            return new ServiceBusQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult>(serviceBusConnectionString,
                 workQueueName, workCompletedQueueName);
         }
 
         private void startWorkerButton_Click(object sender, EventArgs e)
         {
-            var workerNode = new WorkerNode<PixelCalculationInput, PixelCalculationResult>(_queueManager, new PixelCalculator());
+            var workerNode = new WorkerNode<MandelbrotCalculationInput, MandelbrotCalculationResult>(_queueManager, new MandelbrotCalculator());
             workerNode.StartAsync();
         }
 
-        private void PaintPixel(PixelCalculationResult pixelResult)
+        private void PaintPixel(MandelbrotCalculationResult pixelResult)
         {
             if (InvokeRequired)
             {
@@ -101,10 +101,6 @@ namespace TestApp
             var bitmap = new Bitmap(jpgImage);
             CopyRegionIntoImage(bitmap, new Rectangle(0 ,0, bitmap.Width, bitmap.Height), ref _mandelbrotBitmap,
                 new Rectangle(0, pixelResult.Y, bitmap.Width, bitmap.Height));
-            //for (int x = 0; x < pixelResult.Colours.Length; x++)
-            //{
-            //    var colour = GetColor(pixelResult.Colours[x]);
-            //}
             this.Refresh();
         }
 
@@ -119,8 +115,8 @@ namespace TestApp
         private void generateMandelbrotButton_Click(object sender, EventArgs e)
         {
             _mandelbrotBitmap = new Bitmap(mandelbrotPictureBox.Width, mandelbrotPictureBox.Height);
-            var inputList = PixelInputGenerator.GenerateListOfInputs(mandelbrotPictureBox.Width, mandelbrotPictureBox.Height);
-            var batch = new Batch<PixelCalculationInput>(inputList);
+            var inputList = InputGenerator.GenerateListOfInputs(mandelbrotPictureBox.Width, mandelbrotPictureBox.Height);
+            var batch = new Batch<MandelbrotCalculationInput>(inputList);
             _headNode.RunBatch(batch);
         }
     }

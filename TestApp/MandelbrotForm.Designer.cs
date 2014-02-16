@@ -42,7 +42,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.mandelbrotPictureBox.Location = new System.Drawing.Point(0, 0);
             this.mandelbrotPictureBox.Name = "mandelbrotPictureBox";
-            this.mandelbrotPictureBox.Size = new System.Drawing.Size(603, 329);
+            this.mandelbrotPictureBox.Size = new System.Drawing.Size(837, 474);
             this.mandelbrotPictureBox.TabIndex = 0;
             this.mandelbrotPictureBox.TabStop = false;
             this.mandelbrotPictureBox.Paint += new System.Windows.Forms.PaintEventHandler(this.mandelbrotPictureBox_Paint);
@@ -50,7 +50,7 @@
             // startWorkerButton
             // 
             this.startWorkerButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.startWorkerButton.Location = new System.Drawing.Point(609, 49);
+            this.startWorkerButton.Location = new System.Drawing.Point(843, 49);
             this.startWorkerButton.Name = "startWorkerButton";
             this.startWorkerButton.Size = new System.Drawing.Size(87, 43);
             this.startWorkerButton.TabIndex = 1;
@@ -61,7 +61,7 @@
             // generateMandelbrotButton
             // 
             this.generateMandelbrotButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.generateMandelbrotButton.Location = new System.Drawing.Point(609, 98);
+            this.generateMandelbrotButton.Location = new System.Drawing.Point(843, 98);
             this.generateMandelbrotButton.Name = "generateMandelbrotButton";
             this.generateMandelbrotButton.Size = new System.Drawing.Size(87, 43);
             this.generateMandelbrotButton.TabIndex = 2;
@@ -72,7 +72,7 @@
             // startHeadNodeButton
             // 
             this.startHeadNodeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.startHeadNodeButton.Location = new System.Drawing.Point(608, 0);
+            this.startHeadNodeButton.Location = new System.Drawing.Point(842, 0);
             this.startHeadNodeButton.Name = "startHeadNodeButton";
             this.startHeadNodeButton.Size = new System.Drawing.Size(87, 43);
             this.startHeadNodeButton.TabIndex = 3;
@@ -84,7 +84,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(695, 329);
+            this.ClientSize = new System.Drawing.Size(929, 474);
             this.Controls.Add(this.startHeadNodeButton);
             this.Controls.Add(this.generateMandelbrotButton);
             this.Controls.Add(this.startWorkerButton);

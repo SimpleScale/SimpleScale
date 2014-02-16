@@ -40,8 +40,8 @@ namespace TestApp
 
         private void CreateQueueManger()
         {
-            //_queueManager = new MemoryQueueManager<Member, int>();
-            _queueManager = CreateServiceBusQueue();
+            _queueManager = new MemoryQueueManager<Member, int>();
+            //_queueManager = CreateServiceBusQueue();
         }
 
         private void CreateHeadNode()

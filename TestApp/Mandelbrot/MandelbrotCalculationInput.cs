@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TestApp.Mandelbrot
 {
-    public class PixelCalculationInput
+    public class MandelbrotCalculationInput
     {
         public double Scale;
         public int Width;
