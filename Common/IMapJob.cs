@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SimpleScale.Common
 {
-    public interface IMapJob<T, U>
+    public interface IJob<T, U>
     {
         U DoWork(Job<T> job);
     }

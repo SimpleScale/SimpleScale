@@ -11,7 +11,6 @@ namespace TestApp.Mandelbrot
         public double ScaledPoint;
         public MandelbrotCalculationInput Input;
 
-
         public void CalculateRow(Bitmap bitmap, int y)
         {
             for (int x = 0; x < Input.Width; x++)

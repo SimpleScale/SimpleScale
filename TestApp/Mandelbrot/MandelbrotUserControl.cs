@@ -5,6 +5,7 @@ using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -17,11 +18,10 @@ using SimpleScale.WorkerNode;
 using SimpleScale.Queues;
 
 using TestApp.Mandelbrot;
-using System.IO;
 
-namespace TestApp
+namespace TestApp.Mandelbrot
 {
-    public partial class MandelbrotForm : Form
+    public partial class MandelbrotUserControl : UserControl
     {
         private static Logger _logger;
 
@@ -29,7 +29,7 @@ namespace TestApp
         private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> _queueManager;
         private HeadNode<MandelbrotCalculationInput, MandelbrotCalculationResult> _headNode;
 
-        public MandelbrotForm()
+        public MandelbrotUserControl()
         {
             InitializeComponent();
         }
@@ -87,6 +87,8 @@ namespace TestApp
         {
             var workerNode = new WorkerNode<MandelbrotCalculationInput, MandelbrotCalculationResult>(_queueManager, new MandelbrotCalculator());
             workerNode.StartAsync();
+            var nodeCount = int.Parse(workerNodesLabel.Text);
+            workerNodesLabel.Text = (++nodeCount).ToString();
         }
 
         private void PaintPixel(MandelbrotCalculationResult pixelResult)
@@ -118,6 +120,12 @@ namespace TestApp
             var inputList = InputGenerator.GenerateListOfInputs(mandelbrotPictureBox.Width, mandelbrotPictureBox.Height);
             var batch = new Batch<MandelbrotCalculationInput>(inputList);
             _headNode.RunBatch(batch);
+        }
+
+        private void logTextBox_TextChanged(object sender, EventArgs e)
+        {
+            logTextBox.SelectionStart = logTextBox.Text.Length;
+            logTextBox.ScrollToCaret();
         }
     }
 }

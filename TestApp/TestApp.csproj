@@ -45,19 +45,19 @@
     </Reference>
     <Reference Include="SimpleScale.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SimpleScale.0.1.8.38213\lib\net40\SimpleScale.Common.dll</HintPath>
+      <HintPath>..\packages\SimpleScale.0.1.9.39932\lib\net40\SimpleScale.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleScale.HeadNode, Version=0.1.8.38213, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="SimpleScale.HeadNode, Version=0.1.9.39932, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SimpleScale.0.1.8.38213\lib\net40\SimpleScale.HeadNode.dll</HintPath>
+      <HintPath>..\packages\SimpleScale.0.1.9.39932\lib\net40\SimpleScale.HeadNode.dll</HintPath>
     </Reference>
     <Reference Include="SimpleScale.Queues, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SimpleScale.0.1.8.38213\lib\net40\SimpleScale.Queues.dll</HintPath>
+      <HintPath>..\packages\SimpleScale.0.1.9.39932\lib\net40\SimpleScale.Queues.dll</HintPath>
     </Reference>
     <Reference Include="SimpleScale.WorkerNode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\SimpleScale.0.1.8.38213\lib\net40\SimpleScale.WorkerNode.dll</HintPath>
+      <HintPath>..\packages\SimpleScale.0.1.9.39932\lib\net40\SimpleScale.WorkerNode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -74,17 +74,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factors\CountFactorsUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Factors\CountFactorsUserControl.Designer.cs">
+      <DependentUpon>CountFactorsUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MandelbrotForm.cs">
-      <SubType>Form</SubType>
+    <Compile Include="Mandelbrot\MandelbrotUserControl.cs">
+      <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="MandelbrotForm.Designer.cs">
-      <DependentUpon>MandelbrotForm.cs</DependentUpon>
+    <Compile Include="Mandelbrot\MandelbrotUserControl.Designer.cs">
+      <DependentUpon>MandelbrotUserControl.cs</DependentUpon>
     </Compile>
     <Compile Include="Mandelbrot\Common.cs" />
     <Compile Include="Mandelbrot\ComplexNumber.cs" />
@@ -93,15 +99,18 @@
     <Compile Include="Mandelbrot\MandelbrotCalculator.cs" />
     <Compile Include="Mandelbrot\InputGenerator.cs" />
     <Compile Include="Mandelbrot\MandelbrotCalculationResult.cs" />
-    <Compile Include="Member.cs" />
+    <Compile Include="Factors\FactorsCountResult.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ValueMemberMapJob.cs" />
+    <Compile Include="Factors\FactorsCountJob.cs" />
+    <EmbeddedResource Include="Factors\CountFactorsUserControl.resx">
+      <DependentUpon>CountFactorsUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MandelbrotForm.resx">
-      <DependentUpon>MandelbrotForm.cs</DependentUpon>
+    <EmbeddedResource Include="Mandelbrot\MandelbrotUserControl.resx">
+      <DependentUpon>MandelbrotUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

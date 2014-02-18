@@ -16,12 +16,12 @@ namespace SimpleScale.WorkerNode
     {
         public static Logger _logger = LogManager.GetCurrentClassLogger();
         private readonly IQueueManager<T, U> _queueManager;
-        private readonly IMapJob<T, U> _mapJob;
+        private readonly IJob<T, U> _mapJob;
 
         public event WorkerProgressHandler WorkerProgressEvent;
         public delegate void WorkerProgressHandler(WorkerProgressEventArgs e);
 
-        public WorkerNode(IQueueManager<T, U> queueManager, IMapJob<T, U> mapJob)
+        public WorkerNode(IQueueManager<T, U> queueManager, IJob<T, U> mapJob)
         {
             _queueManager = queueManager;
             _mapJob = mapJob;
@@ -51,7 +51,7 @@ namespace SimpleScale.WorkerNode
                 }
                 catch (Exception ex)
                 {
-                    LogAndRaiseProgressEvent(ProgressType.WorkFailed, ex.Message);
+                    _logger.Error(ex);
                 }
             }
         }

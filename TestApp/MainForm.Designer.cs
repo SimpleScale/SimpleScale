@@ -28,82 +28,67 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.startWorkerNodeButton = new System.Windows.Forms.Button();
-            this.logTextBox = new System.Windows.Forms.RichTextBox();
-            this.addBatchToQueueButton = new System.Windows.Forms.Button();
-            this.startHeadNodeButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.demosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.countFactorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mandelbrotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // startWorkerNodeButton
+            // menuStrip1
             // 
-            this.startWorkerNodeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.startWorkerNodeButton.Location = new System.Drawing.Point(211, 266);
-            this.startWorkerNodeButton.Name = "startWorkerNodeButton";
-            this.startWorkerNodeButton.Size = new System.Drawing.Size(193, 90);
-            this.startWorkerNodeButton.TabIndex = 0;
-            this.startWorkerNodeButton.Text = "Start Worker Node";
-            this.startWorkerNodeButton.UseVisualStyleBackColor = true;
-            this.startWorkerNodeButton.Click += new System.EventHandler(this.StartWorkerNodeButtonClick);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.demosToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(888, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
-            // logTextBox
+            // demosToolStripMenuItem
             // 
-            this.logTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.logTextBox.Location = new System.Drawing.Point(12, 12);
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.Size = new System.Drawing.Size(790, 248);
-            this.logTextBox.TabIndex = 1;
-            this.logTextBox.Text = "";
-            this.logTextBox.TextChanged += new System.EventHandler(this.logTextBox_TextChanged);
+            this.demosToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.countFactorsToolStripMenuItem,
+            this.mandelbrotToolStripMenuItem});
+            this.demosToolStripMenuItem.Name = "demosToolStripMenuItem";
+            this.demosToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.demosToolStripMenuItem.Text = "Demos";
             // 
-            // addBatchToQueueButton
+            // countFactorsToolStripMenuItem
             // 
-            this.addBatchToQueueButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.addBatchToQueueButton.Location = new System.Drawing.Point(410, 266);
-            this.addBatchToQueueButton.Name = "addBatchToQueueButton";
-            this.addBatchToQueueButton.Size = new System.Drawing.Size(193, 90);
-            this.addBatchToQueueButton.TabIndex = 3;
-            this.addBatchToQueueButton.Text = "Add Batch to Queue";
-            this.addBatchToQueueButton.UseVisualStyleBackColor = true;
-            this.addBatchToQueueButton.Click += new System.EventHandler(this.addBatchToQueueButtonClick);
+            this.countFactorsToolStripMenuItem.Name = "countFactorsToolStripMenuItem";
+            this.countFactorsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.countFactorsToolStripMenuItem.Text = "Count Factors";
+            this.countFactorsToolStripMenuItem.Click += new System.EventHandler(this.CountFactorsToolStripMenuItem_Click);
             // 
-            // startHeadNodeButton
+            // mandelbrotToolStripMenuItem
             // 
-            this.startHeadNodeButton.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.startHeadNodeButton.Location = new System.Drawing.Point(12, 266);
-            this.startHeadNodeButton.Name = "startHeadNodeButton";
-            this.startHeadNodeButton.Size = new System.Drawing.Size(193, 90);
-            this.startHeadNodeButton.TabIndex = 4;
-            this.startHeadNodeButton.Text = "Start Head Node";
-            this.startHeadNodeButton.UseVisualStyleBackColor = true;
-            this.startHeadNodeButton.Click += new System.EventHandler(this.startHeadNodeButton_Click);
+            this.mandelbrotToolStripMenuItem.Name = "mandelbrotToolStripMenuItem";
+            this.mandelbrotToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.mandelbrotToolStripMenuItem.Text = "Mandelbrot";
+            this.mandelbrotToolStripMenuItem.Click += new System.EventHandler(this.mandelbrotToolStripMenuItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(814, 368);
-            this.Controls.Add(this.startHeadNodeButton);
-            this.Controls.Add(this.addBatchToQueueButton);
-            this.Controls.Add(this.logTextBox);
-            this.Controls.Add(this.startWorkerNodeButton);
+            this.ClientSize = new System.Drawing.Size(888, 476);
+            this.Controls.Add(this.menuStrip1);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
-            this.Text = "Test App";
-            this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Text = "MainForm";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button startWorkerNodeButton;
-        private System.Windows.Forms.RichTextBox logTextBox;
-        private System.Windows.Forms.Button addBatchToQueueButton;
-        private System.Windows.Forms.Button startHeadNodeButton;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem demosToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem countFactorsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mandelbrotToolStripMenuItem;
     }
 }
-
