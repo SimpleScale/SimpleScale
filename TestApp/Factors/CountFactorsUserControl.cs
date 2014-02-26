@@ -50,11 +50,11 @@ namespace TestApp.Factors
 
         private IQueueManager<int, FactorsCountResult> CreateServiceBusQueue()
         {
-            var workQueueName = "Work";
-            var workCompletedQueueName = "WorkCompleted";
-            var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
+            var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"]; 
+            var jobsQueueName = "JobsQueue";
+            var jobsCompletedQueueName = "JobsCompletedQueue";
             return new ServiceBusQueueManager<int, FactorsCountResult>(serviceBusConnectionString,
-                workQueueName, workCompletedQueueName);
+                jobsQueueName, jobsCompletedQueueName);
         }
 
         void HeadNodeJobComplete(object sender, JobCompleteEventArgs<FactorsCountResult> e)
@@ -70,25 +70,25 @@ namespace TestApp.Factors
             workerNodesLabel.Text = (++nodeCount).ToString();
         }
 
-        private void startHeadNodeButton_Click(object sender, EventArgs e)
+        private void StartHeadNodeButtonClick(object sender, EventArgs e)
         {
             var cancelationTokenSource = new CancellationTokenSource();
             _headNode.StartHeadNode();
             startHeadNodeButton.Enabled = false;
         }
 
-        private void addBatchToQueueButtonClick(object sender, EventArgs e)
+        private void AddBatchToQueueButtonClick(object sender, EventArgs e)
         {
-            _headNode.RunBatch(GetBatch());
+            _headNode.RunBatch(CreateBatch());
         }
 
-        private void logTextBox_TextChanged(object sender, EventArgs e)
+        private void LogTextBoxTextChanged(object sender, EventArgs e)
         {
             logTextBox.SelectionStart = logTextBox.Text.Length;
             logTextBox.ScrollToCaret();
         }
 
-        public Batch<int> GetBatch()
+        public Batch<int> CreateBatch()
         {
             var jobDataList = Enumerable.Range(200000000, 100).ToList();
             return new Batch<int>(jobDataList);

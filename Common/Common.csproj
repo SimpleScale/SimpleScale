@@ -47,9 +47,7 @@
   <ItemGroup>
     <Compile Include="Batch.cs" />
     <Compile Include="IMapJob.cs" />
-    <Compile Include="IQueueManager.cs" />
     <Compile Include="Job.cs" />
-    <Compile Include="MemoryQueueManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Result.cs" />
   </ItemGroup>
