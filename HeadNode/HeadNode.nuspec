@@ -7,7 +7,8 @@
     <authors>Keith Harrison</authors>
     <owners>Keith Harrison</owners>
     <projectUrl>https://github.com/keithharrisonuk/SimpleScale</projectUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://raw.github.com/keithharrisonuk/SimpleScale/master/LICENSE.txt</licenseUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>A framework to scale embarrssingly  parallel problems over multiple servers using message queues.</description>
     <releaseNotes></releaseNotes>
     <copyright>Copyright 2014</copyright>
