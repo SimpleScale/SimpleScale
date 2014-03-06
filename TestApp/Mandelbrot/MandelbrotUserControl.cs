@@ -45,9 +45,9 @@ namespace TestApp.Mandelbrot
 
         private void CreateQueueManger()
         {
-            //_queueManager = new MemoryQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> { SleepInterval = 0 };
+            _queueManager = new MemoryQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> { SleepInterval = 0 };
             
-            _queueManager = CreateServiceBusQueue();
+            //_queueManager = CreateServiceBusQueue();
         }
 
         private void startHeadNodeButton_Click(object sender, EventArgs e)
