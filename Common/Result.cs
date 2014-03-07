@@ -18,11 +18,28 @@ namespace SimpleScale.Common
         [DataMember]
         public readonly Guid BatchId;
 
-        public Result(U data, int id, Guid batchId)
+        [DataMember]
+        public readonly Exception Exception;
+
+        public Result(U data, int id, Guid batchId, Exception exception)
         {
             Data = data;
             Id = id;
             BatchId = batchId;
+            Exception = exception;
+        }
+
+        public Result(U data, int id, Guid batchId)
+            : this(data, id, batchId, null)
+        {
+        }
+
+        public bool HasError
+        {
+            get
+            {
+                return Exception != null;
+            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace SimpleScale.Queues
             jobs.ForEach(j => _jobs.Enqueue(j));
         }
 
-        public bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
+        public virtual bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
         {
             if (_jobs.TryDequeue(out job))
             {

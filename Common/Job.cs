@@ -9,6 +9,8 @@ namespace SimpleScale.Common
     [DataContract]
     public class Job<T>
     {
+        public static int UnknownJobId = -1;
+
         [DataMember]
         public readonly T Data;
         
