@@ -9,7 +9,7 @@ using System.Drawing.Imaging;
 
 namespace TestApp.Mandelbrot
 {
-    public class MandelbrotCalculator : IJob<MandelbrotCalculationInput, MandelbrotCalculationResult>
+    public class MandelbrotCalculator : IJobRunner<MandelbrotCalculationInput, MandelbrotCalculationResult>
     {
         public MandelbrotCalculationResult DoWork(Job<MandelbrotCalculationInput> job)
         {

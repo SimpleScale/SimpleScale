@@ -24,15 +24,15 @@ namespace TestApp
 
         private void CountFactorsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Controls.Clear();
-            this.Controls.Add(countFactorsControl);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(countFactorsControl);
             countFactorsControl.Dock = DockStyle.Fill;
         }
 
         private void mandelbrotToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Controls.Clear();
-            this.Controls.Add(mandelbrotControl);
+            this.MainPanel.Controls.Clear();
+            this.MainPanel.Controls.Add(mandelbrotControl);
             mandelbrotControl.Dock = DockStyle.Fill;
 
         }

@@ -43,17 +43,21 @@
     <Reference Include="NLog">
       <HintPath>..\packages\NLog.2.1.0\lib\net40\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleScale.Common">
-      <HintPath>..\packages\SimpleScale.0.2.1.37205\lib\net40\SimpleScale.Common.dll</HintPath>
+    <Reference Include="SimpleScale.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SimpleScale.0.2.2.38092\lib\net40\SimpleScale.Common.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleScale.HeadNode">
-      <HintPath>..\packages\SimpleScale.0.2.1.37205\lib\net40\SimpleScale.HeadNode.dll</HintPath>
+    <Reference Include="SimpleScale.HeadNode, Version=0.2.2.38092, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SimpleScale.0.2.2.38092\lib\net40\SimpleScale.HeadNode.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleScale.Queues">
-      <HintPath>..\packages\SimpleScale.0.2.1.37205\lib\net40\SimpleScale.Queues.dll</HintPath>
+    <Reference Include="SimpleScale.Queues, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SimpleScale.0.2.2.38092\lib\net40\SimpleScale.Queues.dll</HintPath>
     </Reference>
-    <Reference Include="SimpleScale.WorkerNode">
-      <HintPath>..\packages\SimpleScale.0.2.1.37205\lib\net40\SimpleScale.WorkerNode.dll</HintPath>
+    <Reference Include="SimpleScale.WorkerNode, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\SimpleScale.0.2.2.38092\lib\net40\SimpleScale.WorkerNode.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />

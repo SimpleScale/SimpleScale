@@ -32,6 +32,7 @@
             this.demosToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.countFactorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mandelbrotToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainPanel = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,11 +69,20 @@
             this.mandelbrotToolStripMenuItem.Text = "Mandelbrot";
             this.mandelbrotToolStripMenuItem.Click += new System.EventHandler(this.mandelbrotToolStripMenuItem_Click);
             // 
+            // mainPanel
+            // 
+            this.MainPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainPanel.Location = new System.Drawing.Point(0, 24);
+            this.MainPanel.Name = "mainPanel";
+            this.MainPanel.Size = new System.Drawing.Size(888, 452);
+            this.MainPanel.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(888, 476);
+            this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
@@ -90,5 +100,6 @@
         private System.Windows.Forms.ToolStripMenuItem demosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem countFactorsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mandelbrotToolStripMenuItem;
+        private System.Windows.Forms.Panel MainPanel;
     }
 }

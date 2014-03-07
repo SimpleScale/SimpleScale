@@ -7,7 +7,7 @@ using SimpleScale.Common;
 
 namespace TestApp.Factors
 {
-    public class FactorsCountJob : IJob<int, FactorsCountResult>
+    public class FactorsCountJob : IJobRunner<int, FactorsCountResult>
     {
         public FactorsCountResult DoWork(Job<int> job)
         {
