@@ -25,6 +25,9 @@ namespace TestApp.Mandelbrot
     {
         private static Logger _logger;
 
+        private const string JobsQueueName = "PixelCalculationWork";
+        private const string JobsCompletedQueueName = "PixelCalculationWorkCompleted";
+
         Bitmap _mandelbrotBitmap;
         private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> _queueManager;
         private HeadNode<MandelbrotCalculationInput, MandelbrotCalculationResult> _headNode;
@@ -46,8 +49,8 @@ namespace TestApp.Mandelbrot
         private void CreateQueueManger()
         {
             _queueManager = new MemoryQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> { SleepInterval = 0 };
-            
             //_queueManager = CreateServiceBusQueue();
+            //_queueManager = CreateRabbitMqQueue();
         }
 
         private void startHeadNodeButton_Click(object sender, EventArgs e)
@@ -76,11 +79,15 @@ namespace TestApp.Mandelbrot
 
         private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> CreateServiceBusQueue()
         {
-            var workQueueName = "PixelCalculationWork";
-            var workCompletedQueueName = "PixelCalculationWorkCompleted";
             var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"];
             return new ServiceBusQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult>(serviceBusConnectionString,
-                workQueueName, workCompletedQueueName);
+                JobsQueueName, JobsCompletedQueueName);
+        }
+
+        private IQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult> CreateRabbitMqQueue()
+        {
+            return new RabbitMqQueueManager<MandelbrotCalculationInput, MandelbrotCalculationResult>("localhost",
+                JobsQueueName, JobsCompletedQueueName);
         }
 
         private void startWorkerButton_Click(object sender, EventArgs e)

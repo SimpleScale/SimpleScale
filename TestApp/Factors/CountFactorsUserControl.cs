@@ -20,6 +20,8 @@ namespace TestApp.Factors
     {
         private static Logger _logger;
 
+        private const string JobsQueueName = "JobsQueue";
+        private const string JobsCompletedQueueName = "JobsCompletedQueue";
         private IQueueManager<int, FactorsCountResult> _queueManager;
         private HeadNode<int, FactorsCountResult> _headNode;
 
@@ -38,23 +40,28 @@ namespace TestApp.Factors
 
         private void CreateQueueManger()
         {
-            _queueManager = new MemoryQueueManager<int, FactorsCountResult>();
+            //_queueManager = new MemoryQueueManager<int, FactorsCountResult>();
             //_queueManager = CreateServiceBusQueue();
+            _queueManager = CreateRabbitMqQueue();
+        }
+
+        private IQueueManager<int, FactorsCountResult> CreateServiceBusQueue()
+        {
+            var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"]; 
+            return new ServiceBusQueueManager<int, FactorsCountResult>(serviceBusConnectionString,
+                JobsQueueName, JobsCompletedQueueName);
+        }
+
+        private IQueueManager<int, FactorsCountResult> CreateRabbitMqQueue()
+        {
+            return new RabbitMqQueueManager<int, FactorsCountResult>("localhost",
+                JobsQueueName, JobsCompletedQueueName);
         }
 
         private void CreateHeadNode()
         {
             _headNode = new HeadNode<int, FactorsCountResult>(_queueManager);
             _headNode.JobComplete += HeadNodeJobComplete;
-        }
-
-        private IQueueManager<int, FactorsCountResult> CreateServiceBusQueue()
-        {
-            var serviceBusConnectionString = ConfigurationManager.AppSettings["Microsoft.ServiceBus.ConnectionString"]; 
-            var jobsQueueName = "JobsQueue";
-            var jobsCompletedQueueName = "JobsCompletedQueue";
-            return new ServiceBusQueueManager<int, FactorsCountResult>(serviceBusConnectionString,
-                jobsQueueName, jobsCompletedQueueName);
         }
 
         void HeadNodeJobComplete(object sender, JobCompleteEventArgs<FactorsCountResult> e)
