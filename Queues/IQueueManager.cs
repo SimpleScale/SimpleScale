@@ -7,11 +7,11 @@ using SimpleScale.Common;
 
 namespace SimpleScale.Queues
 {
-    public interface IQueueManager<T, U> : IDisposable
+    public interface IQueueManager<InputT, ResultU> : IDisposable
     {
-        void AddJobs(List<Job<T>> jobs);
-        bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U results);
-        void AddCompleteJob(Result<U> job);
-        bool ReadCompletedJob(out Result<U> result);
+        void AddJobs(List<Job<InputT>> jobs);
+        bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU results);
+        void AddCompleteJob(Result<ResultU> job);
+        bool ReadCompletedJob(out Result<ResultU> result);
     }
 }

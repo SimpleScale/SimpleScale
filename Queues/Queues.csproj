@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="RabbitMqQueueManager.cs" />
     <Compile Include="ServiceBusQueueManager.cs" />
     <Compile Include="IQueueManager.cs" />
     <Compile Include="MemoryQueueManager.cs" />

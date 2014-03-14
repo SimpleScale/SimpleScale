@@ -5,21 +5,21 @@ using System.Text;
 
 namespace SimpleScale.Common
 {
-    public class Batch<T>
+    public class Batch<InputT>
     {
         public readonly Guid Id;
-        public readonly List<Job<T>> Jobs;
+        public readonly List<Job<InputT>> Jobs;
 
-        public Batch(List<T> jobDataList)
+        public Batch(List<InputT> jobDataList)
         {
             var jobs = jobDataList.Select(CreateJob);
             Id = Guid.NewGuid();
             Jobs = jobs.ToList();
         }
 
-        private Job<T> CreateJob(T jobData, int index)
+        private Job<InputT> CreateJob(InputT jobData, int index)
         {
-            return new Job<T>(jobData, index + 1, Id);
+            return new Job<InputT>(jobData, index + 1, Id);
         }
 
     }

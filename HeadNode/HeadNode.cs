@@ -11,21 +11,21 @@ using SimpleScale.Queues;
 
 namespace SimpleScale.HeadNode
 {
-    public class HeadNode<T, U>
+    public class HeadNode<InputT, ResultU>
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        private readonly IQueueManager<T, U> _queueManager;
+        private readonly IQueueManager<InputT, ResultU> _queueManager;
         private Task _thread { get; set; }
 
-        public delegate void JobCompleteEventHandler(object sender, JobCompleteEventArgs<U> e);
+        public delegate void JobCompleteEventHandler(object sender, JobCompleteEventArgs<ResultU> e);
         public event JobCompleteEventHandler JobComplete;
 
-        public HeadNode(IQueueManager<T, U> queueManager)
+        public HeadNode(IQueueManager<InputT, ResultU> queueManager)
         {
             _queueManager = queueManager;
         }
         
-        public void RunBatch(Batch<T> batch)
+        public void RunBatch(Batch<InputT> batch)
         {
             _logger.Info("Adding batch '" + batch.Id + "' to queue...");
             _queueManager.AddJobs(batch.Jobs);
@@ -43,18 +43,18 @@ namespace SimpleScale.HeadNode
             while (true)
             {
                 
-                Result<U> completedJobResult;
+                Result<ResultU> completedJobResult;
                 if (!_queueManager.ReadCompletedJob(out completedJobResult))
                     continue;
                 RaiseJobCompleteEvent(completedJobResult);
             }
         }
 
-        private void RaiseJobCompleteEvent(Result<U> result)
+        private void RaiseJobCompleteEvent(Result<ResultU> result)
         {
             if (JobComplete != null)
             {
-                var jobCompleteEventArgs = new JobCompleteEventArgs<U>(result);
+                var jobCompleteEventArgs = new JobCompleteEventArgs<ResultU>(result);
                 JobComplete(this, jobCompleteEventArgs);
             }
         }

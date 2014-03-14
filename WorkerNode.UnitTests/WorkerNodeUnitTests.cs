@@ -12,9 +12,9 @@ using SimpleScale.Queues;
 namespace SimpleScale.WorkerNode.UnitTests
 {
 
-    public class FailingQueueManager<T, U> : MemoryQueueManager<T, U>
+    public class FailingQueueManager<InputT, ResultU> : MemoryQueueManager<InputT, ResultU>
     {
-        public override bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U results)
+        public override bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU results)
         {
             throw new NotImplementedException();
         }

@@ -7,10 +7,10 @@ using System.Text;
 namespace SimpleScale.Common
 {
     [DataContract]
-    public class Result<U>
+    public class Result<ResultU>
     {
         [DataMember]
-        public readonly U Data;
+        public readonly ResultU Data;
 
         [DataMember]
         public readonly int Id;
@@ -21,7 +21,7 @@ namespace SimpleScale.Common
         [DataMember]
         public readonly Exception Exception;
 
-        public Result(U data, int id, Guid batchId, Exception exception)
+        public Result(ResultU data, int id, Guid batchId, Exception exception)
         {
             Data = data;
             Id = id;
@@ -29,7 +29,7 @@ namespace SimpleScale.Common
             Exception = exception;
         }
 
-        public Result(U data, int id, Guid batchId)
+        public Result(ResultU data, int id, Guid batchId)
             : this(data, id, batchId, null)
         {
         }

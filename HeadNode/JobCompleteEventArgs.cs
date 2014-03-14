@@ -7,11 +7,11 @@ using SimpleScale.Common;
 
 namespace SimpleScale.HeadNode
 {
-    public class JobCompleteEventArgs<U> : EventArgs
+    public class JobCompleteEventArgs<ResultU> : EventArgs
     {
-        public readonly Result<U> Result;
+        public readonly Result<ResultU> Result;
 
-        public JobCompleteEventArgs(Result<U> result)
+        public JobCompleteEventArgs(Result<ResultU> result)
         {
             Result = result;
         }
