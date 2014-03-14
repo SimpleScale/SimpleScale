@@ -10,8 +10,8 @@ namespace SimpleScale.Queues
     public interface IQueueManager<InputT, ResultU> : IDisposable
     {
         void AddJobs(List<Job<InputT>> jobs);
-        bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU results);
-        void AddCompleteJob(Result<ResultU> job);
+        bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU result);
+        void AddCompleteJob(Result<ResultU> result);
         bool ReadCompletedJob(out Result<ResultU> result);
     }
 }
