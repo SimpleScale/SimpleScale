@@ -7,12 +7,12 @@ using System.Text;
 namespace SimpleScale.Common
 {
     [DataContract]
-    public class Job<T>
+    public class Job<InputT>
     {
         public static int UnknownJobId = -1;
 
         [DataMember]
-        public readonly T Data;
+        public readonly InputT Data;
         
         [DataMember]
         public readonly int Id;
@@ -20,7 +20,7 @@ namespace SimpleScale.Common
         [DataMember]
         public readonly Guid BatchId;
 
-        public Job(T data, int id, Guid batchId)
+        public Job(InputT data, int id, Guid batchId)
         {
             Data = data;
             Id = id;

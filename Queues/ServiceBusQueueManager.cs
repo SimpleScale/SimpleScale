@@ -12,7 +12,7 @@ using SimpleScale.Common;
 
 namespace SimpleScale.Queues
 {
-    public class ServiceBusQueueManager<T, U> : IQueueManager<T, U> 
+    public class ServiceBusQueueManager<InputT, ResultU> : IQueueManager<InputT, ResultU> 
     {
         private readonly NamespaceManager _namespaceManager;
         private readonly MessagingFactory _messagingFactory;
@@ -28,37 +28,37 @@ namespace SimpleScale.Queues
             _workCompletedQueueClient = CreateQueueClient(workCompletedQueueName);
         }
 
-        public void AddJobs(List<Job<T>> jobs)
+        public void AddJobs(List<Job<InputT>> jobs)
         {
             var messagesList = jobs.Select(job => new BrokeredMessage(job));
             _workQueueClient.SendBatch(messagesList);
         }
 
-        public bool ReadJobAndDoWork(Func<Job<T>, U> doWork, out Job<T> job, out U result)
+        public bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU result)
         {
             job = null;
-            result = default(U);
+            result = default(ResultU);
             var message = _workQueueClient.Receive(new TimeSpan(0, 0, 0, 2));
             if (message == null)
                 return false;
-            job = message.GetBody<Job<T>>();
+            job = message.GetBody<Job<InputT>>();
             result = doWork(job);
             _workQueueClient.Complete(message.LockToken);
             return true;
         }
 
-        public void AddCompleteJob(Result<U> result)
+        public void AddCompleteJob(Result<ResultU> result)
         {
             _workCompletedQueueClient.Send(new BrokeredMessage(result));
         }
 
-        public bool ReadCompletedJob(out Result<U> result)
+        public bool ReadCompletedJob(out Result<ResultU> result)
         {
             result = null;
             var message = _workCompletedQueueClient.Receive(new TimeSpan(0, 0, 0, 2));
             if (message == null)
                 return false;
-            result = message.GetBody<Result<U>>();
+            result = message.GetBody<Result<ResultU>>();
             _workCompletedQueueClient.Complete(message.LockToken);
             return true;
         }
