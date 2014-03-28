@@ -18,6 +18,7 @@ namespace SimpleScale.Queues
         private readonly MessagingFactory _messagingFactory;
         private readonly QueueClient _workQueueClient;
         private readonly QueueClient _workCompletedQueueClient;
+        private readonly string _workQueueName;
 
         public ServiceBusQueueManager(string connectionString, string workQueueName, string workCompletedQueueName)
         {
@@ -26,6 +27,8 @@ namespace SimpleScale.Queues
 
             _workQueueClient = CreateQueueClient(workQueueName);
             _workCompletedQueueClient = CreateQueueClient(workCompletedQueueName);
+
+            _workQueueName = workQueueName;
         }
 
         public void AddJobs(List<Job<InputT>> jobs)
@@ -78,6 +81,29 @@ namespace SimpleScale.Queues
         {
             if (!_namespaceManager.QueueExists(queueName))
                 _namespaceManager.CreateQueue(queueName);
+        }
+
+        private QueueDescription GetQueue(string queueName)
+        {
+            CreateQueue(queueName);
+            return _namespaceManager.GetQueue(queueName);
+        }
+
+        public IEnumerable<BatchDescription> GetAllQueuedBatchIds()
+        {
+            var description = GetQueue(_workQueueName);
+            var allMessages = _workQueueClient.PeekBatch(0, (int)description.MessageCount);
+            var uniqueBatchDescriptions = new Dictionary<Guid, BatchDescription>();
+            foreach (var message in allMessages)
+            {
+                var job = message.GetBody<Job<InputT>>();
+
+                if (!uniqueBatchDescriptions.ContainsKey(job.BatchId))
+                    uniqueBatchDescriptions.Add(job.BatchId, new BatchDescription(job.BatchId));
+                var batchDescription = uniqueBatchDescriptions[job.BatchId];
+                batchDescription.NoOfJobs++;
+            }
+            return uniqueBatchDescriptions.Values;
         }
     }
 }
