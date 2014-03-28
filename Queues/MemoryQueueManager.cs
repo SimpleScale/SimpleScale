@@ -51,5 +51,20 @@ namespace SimpleScale.Queues
         public void Dispose()
         {            
         }
+
+        public IEnumerable<BatchDescription> GetAllQueuedBatchIds()
+        {
+            var uniqueBatchDescriptions = new Dictionary<Guid, BatchDescription>();
+            if (_jobs == null)
+                return uniqueBatchDescriptions.Values;
+            foreach (var job in _jobs)
+            {
+                if (!uniqueBatchDescriptions.ContainsKey(job.BatchId))
+                    uniqueBatchDescriptions.Add(job.BatchId, new BatchDescription(job.BatchId));
+                var batchDescription = uniqueBatchDescriptions[job.BatchId];
+                batchDescription.NoOfJobs++;
+            }
+            return uniqueBatchDescriptions.Values;
+        }
     }
 }

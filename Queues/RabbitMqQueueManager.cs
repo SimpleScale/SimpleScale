@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System.Runtime.Serialization;
+using SimpleScale.Common;
 
 namespace SimpleScale.Queues
 {
@@ -116,6 +117,12 @@ namespace SimpleScale.Queues
             memoryStream.Write(body, 0, body.Length);
             memoryStream.Position = 0;
             return (T)serializer.ReadObject(memoryStream);
+        }
+
+
+        public IEnumerable<BatchDescription> GetAllQueuedBatchIds()
+        {
+            throw new NotImplementedException();
         }
     }
 }

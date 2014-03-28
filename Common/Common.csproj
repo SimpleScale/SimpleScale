@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Batch.cs" />
+    <Compile Include="BatchDescription.cs" />
     <Compile Include="IJobRunner.cs" />
     <Compile Include="Job.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

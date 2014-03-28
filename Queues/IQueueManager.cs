@@ -13,6 +13,6 @@ namespace SimpleScale.Queues
         bool ReadJobAndDoWork(Func<Job<InputT>, ResultU> doWork, out Job<InputT> job, out ResultU result);
         void AddCompleteJob(Result<ResultU> result);
         bool ReadCompletedJob(out Result<ResultU> result);
-        //IEnumerable<Guid> GetAllQueuedBatchIds();
+        IEnumerable<BatchDescription> GetAllQueuedBatchIds();
     }
 }

@@ -44,8 +44,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="MemoryQueueManagerUnitTests.cs" />
     <Compile Include="RabbitMqQueueManagerUnitTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServiceBusQueueManagerUnitTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
